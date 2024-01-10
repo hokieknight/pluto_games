@@ -16,7 +16,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
   void login() {
-    Navigator.pushNamed(context, MainScreen.routeName);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => const MainScreen(),
+      ),
+    );
   }
 
   @override

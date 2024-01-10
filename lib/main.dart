@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pluto_games/screens/login_screen.dart';
-import 'package:pluto_games/screens/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,14 +49,7 @@ class MyApp extends StatelessWidget {
       title: 'Pluto Games',
       darkTheme: darkTheme,
       theme: lightTheme,
-      routes: {
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        MainScreen.routeName: (context) => const MainScreen(),
-        //JoinGameScreen.routeName: (context) => const JoinGameScreen(),
-        //CreateGameScreen.routeName: (context) => const CreateGameScreen(),
-        //GameScreen.routeName: (context) => const GameScreen(),
-      },
-      initialRoute: LoginScreen.routeName,
+      home: const LoginScreen(),
       //themeMode: ThemeMode.light,
     );
   }

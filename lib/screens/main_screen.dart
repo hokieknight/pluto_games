@@ -12,7 +12,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   void logout() {
-    //Navigator.pushNamed(context, LoginScreen.routeName);
     Navigator.pop(context);
   }
 
