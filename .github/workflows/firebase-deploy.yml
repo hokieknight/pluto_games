@@ -33,6 +33,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLUTO_GAMES }}'  
-          projectId: '${{ secrets.FIREBASE_PROJECT_ID_PLUTO_GAMES }}'
-          target: 
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLUTO_GAMES_822C0 }}'  
+          channelId: live
+          projectId: pluto-games-822c0
+          #target: 
