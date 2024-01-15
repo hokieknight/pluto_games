@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 //import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pluto_games/screens/login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -12,11 +18,16 @@ final lightTheme = ThemeData.light().copyWith(
     seedColor: Colors.deepPurple,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
       ),
     ),
   ),
@@ -28,11 +39,16 @@ final darkTheme = ThemeData.dark().copyWith(
     brightness: Brightness.dark,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
       ),
     ),
   ),

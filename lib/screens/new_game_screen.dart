@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum GameTypes { tictactoe, secretsith, uno, poker }
-
-const gameTypeNames = {
-  GameTypes.poker: 'Poker',
-  GameTypes.secretsith: 'Secret Sith',
-  GameTypes.tictactoe: 'Tic-Tac-Toe',
-  GameTypes.uno: 'Uno',
-};
+import 'package:pluto_games/models/game.dart';
 
 class NewGameScreen extends StatefulWidget {
   static String routeName = '/new-game';
@@ -20,7 +12,7 @@ class NewGameScreen extends StatefulWidget {
 
 class _NewGameScreenState extends State<NewGameScreen> {
   final _nameController = TextEditingController();
-  GameTypes _selectedGameType = GameTypes.tictactoe;
+  GameType _selectedGameType = GameType.tictactoe;
 
   @override
   void dispose() {
@@ -67,7 +59,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
           const SizedBox(height: 10),
           DropdownButton(
               value: _selectedGameType,
-              items: GameTypes.values
+              items: GameType.values
                   .map(
                     (gameType) => DropdownMenuItem(
                       value: gameType,
