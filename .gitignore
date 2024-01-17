@@ -54,4 +54,4 @@ app.*.map.json
 #.metadata
 #pubspec.lock
 #analysis_options.yaml
-lib/firebase_options.dart
+#lib/firebase_options.dart
