@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_games/screens/new_game_screen.dart';
 
@@ -12,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   void logout() {
-    Navigator.pop(context);
+    FirebaseAuth.instance.signOut();
   }
 
   void createGame() {
@@ -53,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: logout,
-              child: const Text("Sign Out"),
+              child: const Text("Log Out"),
             ),
           ],
         ),
