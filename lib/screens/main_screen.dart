@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/gameuser.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
-import 'package:pluto_games/screens/new_game_screen.dart';
+import 'package:pluto_games/screens/create_game_screen.dart';
 import 'package:pluto_games/screens/settings_screen.dart';
 //import 'package:pluto_games/models/gameuser.dart';
 
@@ -20,15 +20,6 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   void logout() {
     FirebaseAuth.instance.signOut();
-  }
-
-  void createGame() {
-    showModalBottomSheet(
-      context: context,
-      //isScrollControlled: true,
-      useSafeArea: true,
-      builder: (ctx) => const NewGameScreen(),
-    );
   }
 
   void _loadUser() async {
@@ -86,7 +77,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: createGame,
+                  onPressed: () => {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => const CreateGameScreen(),
+                      ),
+                    )
+                  },
                   child: const Text("Create Game"),
                 ),
                 const SizedBox(height: 20),

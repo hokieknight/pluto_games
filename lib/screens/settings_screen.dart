@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/gameuser.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
@@ -24,22 +23,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _formKey.currentState!.save();
 
     ref.read(gameUserProvider.notifier).setUser(_gameUser);
-    _saveSettingsRemote();
+    //_saveSettingsRemote(_gameUser);
+    _gameUser.saveRemote();
 
     Navigator.of(context).pop();
   }
 
-  Future<void> _saveSettingsRemote() async {
-    final gameUser = ref.watch(gameUserProvider);
-    await FirebaseFirestore.instance
-        .collection('game_users')
-        .doc(gameUser.uid)
-        .set({
-      'email': gameUser.email,
-      'nickname': gameUser.nickname,
-      'image_url': gameUser.imageUrl,
-    });
-  }
+  // Future<void> _saveSettingsRemote(GameUser gameUser) async {
+  //   //final gameUser = ref.watch(gameUserProvider);
+  //   await FirebaseFirestore.instance
+  //       .collection('game_users')
+  //       .doc(gameUser.uid)
+  //       .set({
+  //     'email': gameUser.email,
+  //     'nickname': gameUser.nickname,
+  //     'image_url': gameUser.imageUrl,
+  //   });
+  //}
 
   @override
   Widget build(BuildContext context) {

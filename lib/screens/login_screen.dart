@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/gameuser.dart';
-import 'package:pluto_games/providers/game_user_provider.dart';
 
 final _firebase = FirebaseAuth.instance;
 
