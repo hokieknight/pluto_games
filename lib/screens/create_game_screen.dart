@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/game.dart';
 import 'package:pluto_games/models/gameuser.dart';
@@ -13,12 +14,14 @@ class CreateGameScreen extends ConsumerStatefulWidget {
 
 class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
   final _nameController = TextEditingController();
+  final _numPlayersController = TextEditingController();
   GameType _selectedGameType = GameType.tictactoe;
   late GameUser _gameUser;
 
   @override
   void dispose() {
     _nameController.dispose();
+    _numPlayersController.dispose();
     super.dispose();
   }
 
@@ -41,6 +44,26 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       );
       return;
     }
+
+    if (_numPlayersController.text.trim().isEmpty) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text('Please enter valid # of players'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('OK'),
+            )
+          ],
+        ),
+      );
+      return;
+    }
+
     if (_nameController.text.trim() != _gameUser.nickname) {
       _gameUser.nickname = _nameController.text.trim();
       ref.read(gameUserProvider.notifier).setUser(_gameUser);
@@ -58,7 +81,7 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Pluto Games - Settings'),
+        title: const Text('Pluto Games - Create Game'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -85,6 +108,17 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
                           decoration: const InputDecoration(
                             label: Text('Nickname'),
                           ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: _numPlayersController,
+                          decoration: const InputDecoration(
+                            label: Text('# Players'),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                         ),
                         const SizedBox(height: 10),
                         DropdownButton(
