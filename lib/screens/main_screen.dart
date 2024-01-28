@@ -59,46 +59,44 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         title: const Text('Pluto Games'),
       ),
       body: Center(
-        child: ListView(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => const SettingsScreen(),
-                      ),
-                    )
-                  },
-                  child: const Text("Settings"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => const CreateGameScreen(),
-                      ),
-                    )
-                  },
-                  child: const Text("Create Game"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => {},
-                  child: const Text("Join Game"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: logout,
-                  child: const Text("Log Out"),
-                ),
-              ],
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const SettingsScreen(),
+                    ),
+                  )
+                },
+                child: const Text("Settings"),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const CreateGameScreen(),
+                    ),
+                  )
+                },
+                child: const Text("Create Game"),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => {},
+                child: const Text("Join Game"),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: logout,
+                child: const Text("Log Out"),
+              ),
+            ],
+          ),
+          //],
         ),
       ),
     );

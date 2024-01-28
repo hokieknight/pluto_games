@@ -60,78 +60,78 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Pluto Games - Settings'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.games,
-              size: 50,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Card(
-                margin: const EdgeInsets.all(20),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    //mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextField(
-                        controller: _nameController,
-                        //maxLength: 50,
-                        decoration: const InputDecoration(
-                          label: Text('Nickname'),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Icon(
+                Icons.games,
+                size: 50,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: Card(
+                  margin: const EdgeInsets.all(20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      //mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextField(
+                          controller: _nameController,
+                          //maxLength: 50,
+                          decoration: const InputDecoration(
+                            label: Text('Nickname'),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      DropdownButton(
-                          value: _selectedGameType,
-                          items: GameType.values
-                              .map(
-                                (gameType) => DropdownMenuItem(
-                                  value: gameType,
-                                  child: Text(
-                                    gameTypeNames[gameType]!,
+                        const SizedBox(height: 10),
+                        DropdownButton(
+                            value: _selectedGameType,
+                            items: GameType.values
+                                .map(
+                                  (gameType) => DropdownMenuItem(
+                                    value: gameType,
+                                    child: Text(
+                                      gameTypeNames[gameType]!,
+                                    ),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {
-                            if (value == null) return;
-                            setState(() {
-                              _selectedGameType = value;
-                            });
-                          }),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          ElevatedButton(
-                            onPressed: _createGame,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              if (value == null) return;
+                              setState(() {
+                                _selectedGameType = value;
+                              });
+                            }),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
                             ),
-                            child: const Text('Create Game'),
-                          ),
-                        ],
-                      ),
-                    ],
+                            ElevatedButton(
+                              onPressed: _createGame,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                              ),
+                              child: const Text('Create Game'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

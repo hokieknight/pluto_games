@@ -49,75 +49,77 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Pluto Games - Settings'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.settings,
-              size: 50,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Card(
-                margin: const EdgeInsets.all(20),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      //mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('UserID: ${_gameUser.uid}'),
-                        Text('Email: ${_gameUser.email}'),
-                        TextFormField(
-                          initialValue: _gameUser.nickname,
-                          decoration: const InputDecoration(
-                            labelText: 'Nickname',
+      body: Center(
+        //padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.settings,
+                size: 50,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: Card(
+                  margin: const EdgeInsets.all(20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        //mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('UserID: ${_gameUser.uid}'),
+                          Text('Email: ${_gameUser.email}'),
+                          TextFormField(
+                            initialValue: _gameUser.nickname,
+                            decoration: const InputDecoration(
+                              labelText: 'Nickname',
+                            ),
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Please enter valied nickname';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _gameUser.nickname = value!;
+                            },
                           ),
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter valied nickname';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _gameUser.nickname = value!;
-                          },
-                        ),
-                        Text('Image URL: ${_gameUser.imageUrl}'),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            ElevatedButton(
-                              onPressed: _saveSettings,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
+                          Text('Image URL: ${_gameUser.imageUrl}'),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel'),
                               ),
-                              child: const Text('Save'),
-                            ),
-                          ],
-                        ),
-                      ],
+                              ElevatedButton(
+                                onPressed: _saveSettings,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
+                                ),
+                                child: const Text('Save'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
