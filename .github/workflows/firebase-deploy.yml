@@ -4,16 +4,12 @@ name: Deploy App to Firebase Hosting
 on:
     push:
       branches: [ "main" ]
+      paths:
+        - 'lib/**'
+        - 'web/**'      
     pull_request:
       branches: [ "main" ]
     workflow_dispatch:
-
-# on:
-#     push:
-#         branches:
-#             - main
-#         paths:
-#             - "lib/**"
 
 jobs:
   build_and_preview:
