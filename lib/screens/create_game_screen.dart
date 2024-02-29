@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/game.dart';
+import 'package:pluto_games/models/gameroom.dart';
 import 'package:pluto_games/models/gameuser.dart';
+import 'package:pluto_games/providers/game_room_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
+import 'package:pluto_games/screens/lobby_screen.dart';
 
 class CreateGameScreen extends ConsumerStatefulWidget {
   const CreateGameScreen({super.key});
@@ -14,6 +17,7 @@ class CreateGameScreen extends ConsumerStatefulWidget {
 
 class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
   final _nameController = TextEditingController();
+  final _gameNameController = TextEditingController();
   final _numPlayersController = TextEditingController();
   GameType _selectedGameType = GameType.tictactoe;
   late GameUser _gameUser;
@@ -21,17 +25,18 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _gameNameController.dispose();
     _numPlayersController.dispose();
     super.dispose();
   }
 
-  void _createGame() {
+  void _createGame() async {
     if (_nameController.text.trim().isEmpty) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('Invalid Input'),
-          content: const Text('Please enter valid name'),
+          content: const Text('Please enter valid user nickname'),
           actions: [
             TextButton(
               onPressed: () {
@@ -45,7 +50,27 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       return;
     }
 
-    if (_numPlayersController.text.trim().isEmpty) {
+    if (_gameNameController.text.trim().isEmpty) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text('Please enter valid game name'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('OK'),
+            )
+          ],
+        ),
+      );
+      return;
+    }
+
+    var numPlayers = int.tryParse(_numPlayersController.text.trim());
+    if (numPlayers == null || numPlayers < 2) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -70,7 +95,22 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       _gameUser.saveRemote();
     }
 
-    Navigator.pop(context);
+    GameRoom gameRoom = GameRoom(
+      name: _gameNameController.text.trim(),
+      gameType: _selectedGameType,
+      numPlayers: numPlayers,
+      createdAt: Timestamp.now(),
+    );
+    gameRoom.players.add(_gameUser.uid);
+    await gameRoom.addRemote();
+    ref.read(gameRoomProvider.notifier).setGameRoom(gameRoom);
+
+    //Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => const LobbyScreen(),
+      ),
+    );
   }
 
   @override
@@ -106,7 +146,14 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
                           controller: _nameController,
                           //maxLength: 50,
                           decoration: const InputDecoration(
-                            label: Text('Nickname'),
+                            label: Text('User Nickname'),
+                          ),
+                        ),
+                        TextField(
+                          controller: _gameNameController,
+                          //maxLength: 50,
+                          decoration: const InputDecoration(
+                            label: Text('Game Name'),
                           ),
                         ),
                         const SizedBox(height: 10),

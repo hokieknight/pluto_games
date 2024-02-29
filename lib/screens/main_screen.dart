@@ -9,7 +9,7 @@ import 'package:pluto_games/screens/settings_screen.dart';
 //import 'package:pluto_games/models/gameuser.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
-  static String routeName = '/main';
+  //static String routeName = '/main';
 
   const MainScreen({super.key});
 
