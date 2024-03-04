@@ -42,20 +42,27 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    NetworkImage? imageUrl;
+    Widget? imageText;
+
+    if (!(userImage?.isEmpty ?? true)) {
+      imageUrl = NetworkImage(userImage!);
+    } else if (!(username?.isEmpty ?? true)) {
+      imageText = Text(username!);
+    }
 
     return Stack(
       children: [
-        if (userImage != null)
+        if (imageUrl != null || imageText != null)
           Positioned(
             top: 15,
             // Align user image to the right, if the message is from me.
             right: isMe ? 0 : null,
             child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                userImage!,
-              ),
+              backgroundImage: imageUrl,
               backgroundColor: theme.colorScheme.primary.withAlpha(180),
               radius: 23,
+              child: imageText,
             ),
           ),
         Container(

@@ -24,35 +24,60 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
           .collection('game_room')
           .doc(_gameRoom.id)
           .snapshots(),
-      builder: (ctx, chatSnapshots) {
-        if (chatSnapshots.connectionState == ConnectionState.waiting) {
+      builder: (ctx, gameRoomSnapshot) {
+        if (gameRoomSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (!chatSnapshots.hasData) {
+        if (!gameRoomSnapshot.hasData) {
           return const Center(
             child: Text('Game Room not found.'),
           );
         }
 
-        if (chatSnapshots.hasError) {
+        if (gameRoomSnapshot.hasError) {
           return const Center(
             child: Text('Something went wrong...'),
           );
         }
 
+        final data = gameRoomSnapshot.data!.data() as Map<String, dynamic>;
+        final players = data['players'] as List<dynamic>;
+
         return Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Text(
-                  'Game Type: ${chatSnapshots.data!.data()!['gameType'].toString()}'),
+              Row(
+                children: [
+                  //const Text('Game Type: '),
+                  Text(data['gameType'].toString()),
+                ],
+              ),
               //const SizedBox(width: 10),
-              Text(
-                  '# Players: ${chatSnapshots.data!.data()!['numPlayers'].toString()}'),
-              Text('Game ID: ${_gameRoom.id}'),
+              Row(
+                children: [
+                  const Text('# Players: '),
+                  Text('${players.length} / ${data['numPlayers'].toString()}'),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text('Game ID: '),
+                  SelectableText(_gameRoom.id),
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: players.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Text('Player: ${players[index]['name']}');
+                  },
+                ),
+              ),
             ],
           ),
         );

@@ -101,7 +101,9 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       numPlayers: numPlayers,
       createdAt: Timestamp.now(),
     );
-    gameRoom.players.add(_gameUser.uid);
+    gameRoom.players.add(
+      {'id': _gameUser.uid, 'name': _gameUser.nickname},
+    );
     await gameRoom.addRemote();
     ref.read(gameRoomProvider.notifier).setGameRoom(gameRoom);
 

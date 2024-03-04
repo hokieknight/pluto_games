@@ -27,7 +27,9 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       ),
       body: const Column(
         children: [
-          GameRoomWidget(),
+          Expanded(
+            child: GameRoomWidget(),
+          ),
           Expanded(
             child: ChatMessages(),
           ),

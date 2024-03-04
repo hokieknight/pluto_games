@@ -16,6 +16,7 @@ class GameRoom {
   final GameType gameType;
   final Timestamp createdAt;
   var players = [];
+  var messages = [];
 
   GameRoom({
     this.id = '-1',
@@ -32,6 +33,18 @@ class GameRoom {
       'gameType': gameTypeNames[gameType],
       'createdAt': Timestamp.now(),
       'players': players,
+      'messages': messages,
     }).then((value) => id = value.id);
+  }
+
+  Future<void> setRemote() async {
+    await FirebaseFirestore.instance.collection('game_room').doc(id).set({
+      'name': name,
+      'numPlayers': numPlayers,
+      'gameType': gameTypeNames[gameType],
+      'createdAt': Timestamp.now(),
+      'players': players,
+      'messages': messages,
+    });
   }
 }
