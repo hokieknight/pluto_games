@@ -52,6 +52,8 @@ class _ChatMessagesState extends ConsumerState<ChatMessages> {
         var loadedMessages = [];
         if (data['messages'] != null) {
           loadedMessages = data['messages'] as List<dynamic>;
+          loadedMessages
+              .sort((a, b) => b['createdAt'].compareTo(a['createdAt']));
         }
 
         return ListView.builder(
