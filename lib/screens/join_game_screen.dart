@@ -71,8 +71,7 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
       _gameUser.saveRemote();
     }
 
-    _gameRoom.id = _gameIDController.text.trim();
-    await _gameRoom.getRemote();
+    await _gameRoom.getRemote(_gameIDController.text.trim());
     _gameRoom.players ??= [];
     _gameRoom.players!.add(
       {'id': _gameUser.uid, 'name': _gameUser.nickname},

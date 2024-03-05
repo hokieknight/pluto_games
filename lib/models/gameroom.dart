@@ -66,10 +66,6 @@ class GameRoom {
     };
   }
 
-  GameRoom.get({required this.id}) {
-    getRemote();
-  }
-
   Future<void> addRemote() async {
     await FirebaseFirestore.instance.collection('game_room').add({
       'name': name,
@@ -86,29 +82,29 @@ class GameRoom {
       'name': name,
       'numPlayers': numPlayers,
       'gameType': gameType,
-      //'createdAt': Timestamp.now(),
+      'createdAt': createdAt,
       'players': players,
       'messages': messages,
     });
   }
 
-  Future<void> getRemote() async {
+  Future<GameRoom> getRemote(id) async {
     final ref = FirebaseFirestore.instance.collection('game_room').doc(id);
     //.withConverter(
     //  fromFirestore: GameRoom.fromFirestore,
     //  toFirestore: (GameRoom gameRoom, _) => gameRoom.toFirestore(),
     //);
-    ref.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        name = data['name'];
-        numPlayers = data['numPlayers'];
-        gameType = data['gameType'];
-        createdAt = data['createdAt'];
-        players = data['players'];
-        messages = data['messages'];
-      },
-      //onError: (e) => print("Error getting document: $e"),
-    );
+    DocumentSnapshot doc = await ref.get();
+    final data = doc.data() as Map<String, dynamic>;
+
+    this.id = doc.id;
+    name = data['name'];
+    numPlayers = data['numPlayers'];
+    gameType = data['gameType'];
+    createdAt = data['createdAt'];
+    players = data['players'];
+    messages = data['messages'];
+
+    return this;
   }
 }
