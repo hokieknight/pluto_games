@@ -43,7 +43,12 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
           );
         }
 
-        final data = gameRoomSnapshot.data!.data() as Map<String, dynamic>;
+        Map<String, dynamic>? data = gameRoomSnapshot.data!.data();
+        if (data == null) {
+          return Center(
+            child: Text('Game Room not found. ${_gameRoom.id}'),
+          );
+        }
         final players = data['players'] as List<dynamic>;
 
         return Padding(
@@ -66,7 +71,7 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
               Row(
                 children: [
                   const Text('Game ID: '),
-                  SelectableText(_gameRoom.id),
+                  SelectableText(_gameRoom.id!),
                 ],
               ),
               Expanded(

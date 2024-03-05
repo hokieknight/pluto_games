@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/gameroom.dart';
 import 'package:pluto_games/models/gameuser.dart';
@@ -7,29 +6,27 @@ import 'package:pluto_games/providers/game_room_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/screens/lobby_screen.dart';
 
-class CreateGameScreen extends ConsumerStatefulWidget {
-  const CreateGameScreen({super.key});
+class JoinGameScreen extends ConsumerStatefulWidget {
+  const JoinGameScreen({super.key});
 
   @override
-  ConsumerState<CreateGameScreen> createState() => _CreateGameScreenState();
+  ConsumerState<JoinGameScreen> createState() => _JoinGameScreenState();
 }
 
-class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
+class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
   final _nameController = TextEditingController();
-  final _gameNameController = TextEditingController();
-  final _numPlayersController = TextEditingController();
-  GameType _selectedGameType = GameType.tictactoe;
+  final _gameIDController = TextEditingController();
   late GameUser _gameUser;
+  late GameRoom _gameRoom;
 
   @override
   void dispose() {
     _nameController.dispose();
-    _gameNameController.dispose();
-    _numPlayersController.dispose();
+    _gameIDController.dispose();
     super.dispose();
   }
 
-  void _createGame() async {
+  void _joinGame() async {
     if (_nameController.text.trim().isEmpty) {
       showDialog(
         context: context,
@@ -49,32 +46,12 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       return;
     }
 
-    if (_gameNameController.text.trim().isEmpty) {
+    if (_gameIDController.text.trim().isEmpty) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('Invalid Input'),
           content: const Text('Please enter valid game name'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-              },
-              child: const Text('OK'),
-            )
-          ],
-        ),
-      );
-      return;
-    }
-
-    var numPlayers = int.tryParse(_numPlayersController.text.trim());
-    if (numPlayers == null || numPlayers < 2) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Invalid Input'),
-          content: const Text('Please enter valid # of players'),
           actions: [
             TextButton(
               onPressed: () {
@@ -94,19 +71,15 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       _gameUser.saveRemote();
     }
 
-    GameRoom gameRoom = GameRoom.newGame(
-      name: _gameNameController.text.trim(),
-      gameType: gameTypeNames[_selectedGameType],
-      numPlayers: numPlayers,
-    );
-    gameRoom.players ??= [];
-    gameRoom.players!.add(
+    _gameRoom.id = _gameIDController.text.trim();
+    await _gameRoom.getRemote();
+    _gameRoom.players ??= [];
+    _gameRoom.players!.add(
       {'id': _gameUser.uid, 'name': _gameUser.nickname},
     );
-    await gameRoom.addRemote();
-    ref.read(gameRoomProvider.notifier).setGameRoom(gameRoom);
+    await _gameRoom.setRemote();
+    ref.read(gameRoomProvider.notifier).setGameRoom(_gameRoom);
 
-    //Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const LobbyScreen(),
@@ -117,12 +90,13 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
   @override
   Widget build(BuildContext context) {
     _gameUser = ref.watch(gameUserProvider);
+    _gameRoom = ref.watch(gameRoomProvider);
     _nameController.text = _gameUser.nickname;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Pluto Games - Create Game'),
+        title: const Text('Pluto Games - Join Game'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -151,42 +125,12 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
                           ),
                         ),
                         TextField(
-                          controller: _gameNameController,
+                          controller: _gameIDController,
                           //maxLength: 50,
                           decoration: const InputDecoration(
-                            label: Text('Game Name'),
+                            label: Text('Game ID'),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: _numPlayersController,
-                          decoration: const InputDecoration(
-                            label: Text('# Players'),
-                          ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        DropdownButton(
-                            value: _selectedGameType,
-                            items: GameType.values
-                                .map(
-                                  (gameType) => DropdownMenuItem(
-                                    value: gameType,
-                                    child: Text(
-                                      gameTypeNames[gameType]!,
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _selectedGameType = value;
-                              });
-                            }),
                         const SizedBox(height: 20),
                         Row(
                           children: [
@@ -197,13 +141,13 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
                               child: const Text('Cancel'),
                             ),
                             ElevatedButton(
-                              onPressed: _createGame,
+                              onPressed: _joinGame,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .primaryContainer,
                               ),
-                              child: const Text('Create Game'),
+                              child: const Text('Join Game'),
                             ),
                           ],
                         ),

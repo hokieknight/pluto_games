@@ -37,21 +37,8 @@ class _NewMessageState extends ConsumerState<NewMessage> {
     FocusScope.of(context).unfocus();
     _messageController.clear();
 
-    //final user = FirebaseAuth.instance.currentUser!;
-    //final userData = await FirebaseFirestore.instance
-    //    .collection('game_users')
-    //    .doc(user.uid)
-    //    .get();
-
-    //FirebaseFirestore.instance.collection('game_chat').add({
-    //  'text': enteredMessage,
-    //  'createdAt': Timestamp.now(),
-    //  'userId': user.uid,
-    //  'nickname': userData.data()!['nickname'],
-    //  'userImage': userData.data()!['image_url'],
-    //});
-
-    _gameRoom.messages.add(
+    _gameRoom.messages ??= [];
+    _gameRoom.messages!.add(
       {
         'text': enteredMessage,
         'createdAt': Timestamp.now(),

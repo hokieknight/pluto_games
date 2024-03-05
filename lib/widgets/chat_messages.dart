@@ -49,7 +49,10 @@ class _ChatMessagesState extends ConsumerState<ChatMessages> {
         }
 
         final data = gameRoomSnapshot.data!.data() as Map<String, dynamic>;
-        final loadedMessages = data['messages'] as List<dynamic>;
+        var loadedMessages = [];
+        if (data['messages'] != null) {
+          loadedMessages = data['messages'] as List<dynamic>;
+        }
 
         return ListView.builder(
           padding: const EdgeInsets.only(

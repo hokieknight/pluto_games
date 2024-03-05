@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/gameuser.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/screens/create_game_screen.dart';
+import 'package:pluto_games/screens/join_game_screen.dart';
 import 'package:pluto_games/screens/settings_screen.dart';
 //import 'package:pluto_games/models/gameuser.dart';
 
@@ -86,7 +87,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const JoinGameScreen(),
+                    ),
+                  )
+                },
                 child: const Text("Join Game"),
               ),
               const SizedBox(height: 20),
