@@ -80,6 +80,7 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
     await _gameRoom.setRemote();
     ref.read(gameRoomProvider.notifier).setGameRoom(_gameRoom);
 
+    if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const LobbyScreen(),

@@ -36,7 +36,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } on FirebaseAuthException catch (error) {
       //if (error.code == 'email-already-in-use') {}
-      if (!context.mounted) return;
+      //if (!context.mounted) return;
+      if (!mounted) return;
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -108,7 +108,7 @@ class GameRoom {
         players = data['players'];
         messages = data['messages'];
       },
-      onError: (e) => print("Error getting document: $e"),
+      //onError: (e) => print("Error getting document: $e"),
     );
   }
 }

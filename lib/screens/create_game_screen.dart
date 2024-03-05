@@ -107,6 +107,7 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
     ref.read(gameRoomProvider.notifier).setGameRoom(gameRoom);
 
     //Navigator.pop(context);
+    if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const LobbyScreen(),
