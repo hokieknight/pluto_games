@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/game_state.dart';
+import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
+import 'package:pluto_games/providers/game_user_provider.dart';
 
 class GameRoomWidget extends ConsumerStatefulWidget {
   const GameRoomWidget({super.key});
@@ -13,11 +15,25 @@ class GameRoomWidget extends ConsumerStatefulWidget {
 
 class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
   late GameState _gameState;
+  late GameUser _gameUser;
+
+  void _leaveGame() async {
+    NavigatorState nav = Navigator.of(context);
+    nav.pop();
+    nav.pop();
+
+    _gameState.players!.removeWhere((item) => item['id'] == _gameUser.uid);
+    await _gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(_gameState);
+  }
+
+  void _startGame() async {}
 
   @override
   Widget build(BuildContext context) {
     //final authenticatedUser = FirebaseAuth.instance.currentUser!;
     _gameState = ref.watch(gameStateProvider);
+    _gameUser = ref.watch(gameUserProvider);
 
     return StreamBuilder(
       stream: FirebaseFirestore.instance
@@ -82,6 +98,22 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
                     return Text('Player: ${players[index]['name']}');
                   },
                 ),
+              ),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: _leaveGame,
+                    child: const Text('Leave'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _startGame,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    child: const Text('Start Game'),
+                  ),
+                ],
               ),
             ],
           ),
