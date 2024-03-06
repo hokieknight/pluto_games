@@ -9,7 +9,7 @@ const gameTypeNames = {
   GameType.uno: 'Uno',
 };
 
-class GameRoom {
+class GameState {
   String? id;
   String? name;
   int? numPlayers;
@@ -18,7 +18,7 @@ class GameRoom {
   List<dynamic>? players;
   List<dynamic>? messages;
 
-  GameRoom.newGame({
+  GameState.newGame({
     this.id = '-1',
     required this.name,
     required this.numPlayers,
@@ -27,7 +27,7 @@ class GameRoom {
         players = null,
         messages = null;
 
-  GameRoom({
+  GameState({
     required this.id,
     required this.name,
     required this.numPlayers,
@@ -37,12 +37,12 @@ class GameRoom {
     required this.messages,
   });
 
-  factory GameRoom.fromFirestore(
+  factory GameState.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
-    return GameRoom(
+    return GameState(
       id: data?['id'],
       name: data?['name'],
       numPlayers: data?['numPlayers'],
@@ -67,7 +67,7 @@ class GameRoom {
   }
 
   Future<void> addRemote() async {
-    await FirebaseFirestore.instance.collection('game_room').add({
+    await FirebaseFirestore.instance.collection('game_state').add({
       'name': name,
       'numPlayers': numPlayers,
       'gameType': gameType,
@@ -78,7 +78,7 @@ class GameRoom {
   }
 
   Future<void> setRemote() async {
-    await FirebaseFirestore.instance.collection('game_room').doc(id).set({
+    await FirebaseFirestore.instance.collection('game_state').doc(id).set({
       'name': name,
       'numPlayers': numPlayers,
       'gameType': gameType,
@@ -88,11 +88,11 @@ class GameRoom {
     });
   }
 
-  Future<GameRoom> getRemote(id) async {
-    final ref = FirebaseFirestore.instance.collection('game_room').doc(id);
+  Future<GameState> getRemote(id) async {
+    final ref = FirebaseFirestore.instance.collection('game_state').doc(id);
     //.withConverter(
-    //  fromFirestore: GameRoom.fromFirestore,
-    //  toFirestore: (GameRoom gameRoom, _) => gameRoom.toFirestore(),
+    //  fromFirestore: GameState.fromFirestore,
+    //  toFirestore: (GameState GameState, _) => GameState.toFirestore(),
     //);
     DocumentSnapshot doc = await ref.get();
     final data = doc.data() as Map<String, dynamic>;

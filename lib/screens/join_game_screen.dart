@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/gameroom.dart';
-import 'package:pluto_games/models/gameuser.dart';
-import 'package:pluto_games/providers/game_room_provider.dart';
+import 'package:pluto_games/models/game_state.dart';
+import 'package:pluto_games/models/game_user.dart';
+import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/screens/lobby_screen.dart';
 
@@ -17,7 +17,7 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
   final _nameController = TextEditingController();
   final _gameIDController = TextEditingController();
   late GameUser _gameUser;
-  late GameRoom _gameRoom;
+  late GameState _gameState;
 
   @override
   void dispose() {
@@ -71,13 +71,13 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
       _gameUser.saveRemote();
     }
 
-    await _gameRoom.getRemote(_gameIDController.text.trim());
-    _gameRoom.players ??= [];
-    _gameRoom.players!.add(
+    await _gameState.getRemote(_gameIDController.text.trim());
+    _gameState.players ??= [];
+    _gameState.players!.add(
       {'id': _gameUser.uid, 'name': _gameUser.nickname},
     );
-    await _gameRoom.setRemote();
-    ref.read(gameRoomProvider.notifier).setGameRoom(_gameRoom);
+    await _gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(_gameState);
 
     if (!mounted) return;
     Navigator.of(context).push(
@@ -90,7 +90,7 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
   @override
   Widget build(BuildContext context) {
     _gameUser = ref.watch(gameUserProvider);
-    _gameRoom = ref.watch(gameRoomProvider);
+    _gameState = ref.watch(gameStateProvider);
     _nameController.text = _gameUser.nickname;
 
     return Scaffold(

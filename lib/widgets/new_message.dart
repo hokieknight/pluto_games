@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/gameroom.dart';
-import 'package:pluto_games/models/gameuser.dart';
-import 'package:pluto_games/providers/game_room_provider.dart';
+import 'package:pluto_games/models/game_state.dart';
+import 'package:pluto_games/models/game_user.dart';
+import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 
 class NewMessage extends ConsumerStatefulWidget {
@@ -17,7 +17,7 @@ class NewMessage extends ConsumerStatefulWidget {
 
 class _NewMessageState extends ConsumerState<NewMessage> {
   final _messageController = TextEditingController();
-  late GameRoom _gameRoom;
+  late GameState _gameState;
   late GameUser _gameUser;
 
   @override
@@ -37,8 +37,8 @@ class _NewMessageState extends ConsumerState<NewMessage> {
     FocusScope.of(context).unfocus();
     _messageController.clear();
 
-    _gameRoom.messages ??= [];
-    _gameRoom.messages!.add(
+    _gameState.messages ??= [];
+    _gameState.messages!.add(
       {
         'text': enteredMessage,
         'createdAt': Timestamp.now(),
@@ -47,13 +47,13 @@ class _NewMessageState extends ConsumerState<NewMessage> {
         'userImage': _gameUser.imageUrl,
       },
     );
-    await _gameRoom.setRemote();
-    ref.read(gameRoomProvider.notifier).setGameRoom(_gameRoom);
+    await _gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(_gameState);
   }
 
   @override
   Widget build(BuildContext context) {
-    _gameRoom = ref.watch(gameRoomProvider);
+    _gameState = ref.watch(gameStateProvider);
     _gameUser = ref.watch(gameUserProvider);
 
     return Padding(

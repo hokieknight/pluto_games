@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/gameuser.dart';
+import 'package:pluto_games/models/game_user.dart';
 
 class GameUserNotifier extends StateNotifier<GameUser> {
   GameUserNotifier()

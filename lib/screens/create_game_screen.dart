@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/gameroom.dart';
-import 'package:pluto_games/models/gameuser.dart';
-import 'package:pluto_games/providers/game_room_provider.dart';
+import 'package:pluto_games/models/game_state.dart';
+import 'package:pluto_games/models/game_user.dart';
+import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/screens/lobby_screen.dart';
 
@@ -94,17 +94,17 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       _gameUser.saveRemote();
     }
 
-    GameRoom gameRoom = GameRoom.newGame(
+    GameState gameState = GameState.newGame(
       name: _gameNameController.text.trim(),
       gameType: gameTypeNames[_selectedGameType],
       numPlayers: numPlayers,
     );
-    gameRoom.players ??= [];
-    gameRoom.players!.add(
+    gameState.players ??= [];
+    gameState.players!.add(
       {'id': _gameUser.uid, 'name': _gameUser.nickname},
     );
-    await gameRoom.addRemote();
-    ref.read(gameRoomProvider.notifier).setGameRoom(gameRoom);
+    await gameState.addRemote();
+    ref.read(gameStateProvider.notifier).setGameState(gameState);
 
     //Navigator.pop(context);
     if (!mounted) return;
