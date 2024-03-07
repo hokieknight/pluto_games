@@ -28,6 +28,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       body: const Column(
         children: [
           Expanded(
+            flex: 3,
             child: GameRoomWidget(),
           ),
           Expanded(

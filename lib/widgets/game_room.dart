@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/game_user.dart';
+import 'package:pluto_games/models/secret_sith_game_data.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
+import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/game_info.dart';
 import 'package:pluto_games/widgets/secret_sith_board.dart';
 
@@ -31,6 +33,14 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
 
   void _startGame() async {
     _gameState.gameStarted = true;
+    if (_gameState.gameType == 'Secret Sith') {
+      SecretSithGameData sithGameData = SecretSithGameData.newGame(
+          gameID: _gameState.id!, gamePlayers: _gameState.players);
+      await sithGameData.addRemote();
+      ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
+      _gameState.gameDataID = sithGameData.id;
+    }
+
     await _gameState.setRemote();
     ref.read(gameStateProvider.notifier).setGameState(_gameState);
   }

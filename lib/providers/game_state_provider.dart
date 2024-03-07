@@ -13,6 +13,7 @@ class GameStateNotifier extends StateNotifier<GameState> {
             players: null,
             messages: null,
             gameStarted: null,
+            gameDataID: null,
           ),
         );
 

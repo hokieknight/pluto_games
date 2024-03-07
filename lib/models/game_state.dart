@@ -18,6 +18,7 @@ class GameState {
   List<dynamic>? players;
   List<dynamic>? messages;
   bool? gameStarted;
+  String? gameDataID;
 
   GameState.newGame({
     this.id = '-1',
@@ -27,7 +28,8 @@ class GameState {
   })  : createdAt = Timestamp.now(),
         players = null,
         messages = null,
-        gameStarted = false;
+        gameStarted = false,
+        gameDataID = null;
 
   GameState({
     required this.id,
@@ -38,38 +40,41 @@ class GameState {
     required this.players,
     required this.messages,
     required this.gameStarted,
+    required this.gameDataID,
   });
 
-  factory GameState.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-    return GameState(
-      id: data?['id'],
-      name: data?['name'],
-      numPlayers: data?['numPlayers'],
-      gameType: data?['gameType'],
-      createdAt: data?['createdAt'],
-      players:
-          data?['players'] is Iterable ? List.from(data?['players']) : null,
-      messages:
-          data?['messages'] is Iterable ? List.from(data?['messages']) : null,
-      gameStarted: data?['gameStarted'],
-    );
-  }
+  // factory GameState.fromFirestore(
+  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
+  //   SnapshotOptions? options,
+  // ) {
+  //   final data = snapshot.data();
+  //   return GameState(
+  //     id: data?['id'],
+  //     name: data?['name'],
+  //     numPlayers: data?['numPlayers'],
+  //     gameType: data?['gameType'],
+  //     createdAt: data?['createdAt'],
+  //     players:
+  //         data?['players'] is Iterable ? List.from(data?['players']) : null,
+  //     messages:
+  //         data?['messages'] is Iterable ? List.from(data?['messages']) : null,
+  //     gameStarted: data?['gameStarted'],
+  //     gameDataID: data?['gameDataID'],
+  //   );
+  // }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      if (name != null) "name": name,
-      if (numPlayers != null) "numPlayers": numPlayers,
-      if (gameType != null) "gameType": gameType,
-      if (createdAt != null) "createdAt": createdAt,
-      if (players != null) "players": players,
-      if (messages != null) "messages": messages,
-      if (gameStarted != null) "gameStarted": gameStarted,
-    };
-  }
+  // Map<String, dynamic> toFirestore() {
+  //   return {
+  //     if (name != null) "name": name,
+  //     if (numPlayers != null) "numPlayers": numPlayers,
+  //     if (gameType != null) "gameType": gameType,
+  //     if (createdAt != null) "createdAt": createdAt,
+  //     if (players != null) "players": players,
+  //     if (messages != null) "messages": messages,
+  //     if (gameStarted != null) "gameStarted": gameStarted,
+  //     if (gameDataID != null) "gameDataID": gameDataID,
+  //   };
+  // }
 
   Future<void> addRemote() async {
     await FirebaseFirestore.instance.collection('game_state').add({
@@ -80,6 +85,7 @@ class GameState {
       'players': players,
       'messages': messages,
       'gameStarted': gameStarted,
+      'gameDataID': gameDataID,
     }).then((value) => id = value.id);
   }
 
@@ -92,6 +98,7 @@ class GameState {
       'players': players,
       'messages': messages,
       'gameStarted': gameStarted,
+      'gameDataID': gameDataID,
     });
   }
 
@@ -112,6 +119,7 @@ class GameState {
     players = data['players'];
     messages = data['messages'];
     gameStarted = data['gameStarted'];
+    gameDataID = data['gameDataID'];
 
     return this;
   }
