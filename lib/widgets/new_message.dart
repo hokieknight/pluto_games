@@ -37,6 +37,7 @@ class _NewMessageState extends ConsumerState<NewMessage> {
     FocusScope.of(context).unfocus();
     _messageController.clear();
 
+    await _gameState.getRemote(_gameState.id);
     _gameState.messages ??= [];
     _gameState.messages!.add(
       {
