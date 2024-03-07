@@ -17,6 +17,7 @@ class GameState {
   Timestamp? createdAt;
   List<dynamic>? players;
   List<dynamic>? messages;
+  bool? gameStarted;
 
   GameState.newGame({
     this.id = '-1',
@@ -25,7 +26,8 @@ class GameState {
     required this.gameType,
   })  : createdAt = Timestamp.now(),
         players = null,
-        messages = null;
+        messages = null,
+        gameStarted = false;
 
   GameState({
     required this.id,
@@ -35,6 +37,7 @@ class GameState {
     required this.createdAt,
     required this.players,
     required this.messages,
+    required this.gameStarted,
   });
 
   factory GameState.fromFirestore(
@@ -52,6 +55,7 @@ class GameState {
           data?['players'] is Iterable ? List.from(data?['players']) : null,
       messages:
           data?['messages'] is Iterable ? List.from(data?['messages']) : null,
+      gameStarted: data?['gameStarted'],
     );
   }
 
@@ -63,6 +67,7 @@ class GameState {
       if (createdAt != null) "createdAt": createdAt,
       if (players != null) "players": players,
       if (messages != null) "messages": messages,
+      if (gameStarted != null) "gameStarted": gameStarted,
     };
   }
 
@@ -74,6 +79,7 @@ class GameState {
       'createdAt': Timestamp.now(),
       'players': players,
       'messages': messages,
+      'gameStarted': gameStarted,
     }).then((value) => id = value.id);
   }
 
@@ -85,6 +91,7 @@ class GameState {
       'createdAt': createdAt,
       'players': players,
       'messages': messages,
+      'gameStarted': gameStarted,
     });
   }
 
@@ -104,6 +111,7 @@ class GameState {
     createdAt = data['createdAt'];
     players = data['players'];
     messages = data['messages'];
+    gameStarted = data['gameStarted'];
 
     return this;
   }

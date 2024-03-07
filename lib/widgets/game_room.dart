@@ -5,6 +5,8 @@ import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
+import 'package:pluto_games/widgets/game_info.dart';
+import 'package:pluto_games/widgets/secret_sith_board.dart';
 
 class GameRoomWidget extends ConsumerStatefulWidget {
   const GameRoomWidget({super.key});
@@ -27,7 +29,11 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
     ref.read(gameStateProvider.notifier).setGameState(_gameState);
   }
 
-  void _startGame() async {}
+  void _startGame() async {
+    _gameState.gameStarted = true;
+    await _gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(_gameState);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,40 +71,19 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
             child: Text('Game not found. ${_gameState.id}'),
           );
         }
-        final players = data['players'] as List<dynamic>;
+
+        Widget gameWidget = GameInfoWidget(gameID: _gameState.id!, data: data);
+        if (data['gameStarted']) {
+          if (data['gameType'] == "Secret Sith") {
+            gameWidget = const SecretSithBoard();
+          }
+        }
 
         return Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Row(
-                children: [
-                  //const Text('Game Type: '),
-                  Text(data['gameType'].toString()),
-                ],
-              ),
-              //const SizedBox(width: 10),
-              Row(
-                children: [
-                  const Text('# Players: '),
-                  Text('${players.length} / ${data['numPlayers'].toString()}'),
-                ],
-              ),
-              Row(
-                children: [
-                  const Text('Game ID: '),
-                  SelectableText(_gameState.id!),
-                ],
-              ),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: players.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Text('Player: ${players[index]['name']}');
-                  },
-                ),
-              ),
+              gameWidget,
               Row(
                 children: [
                   TextButton(
