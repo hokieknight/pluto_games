@@ -23,7 +23,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Pluto Games - Game Lobby - ${_gameState.name}'),
+        title: Text('Pluto Games - Room - ${_gameState.name}'),
       ),
       body: const Column(
         children: [
