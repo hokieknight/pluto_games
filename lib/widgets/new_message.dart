@@ -17,8 +17,8 @@ class NewMessage extends ConsumerStatefulWidget {
 
 class _NewMessageState extends ConsumerState<NewMessage> {
   final _messageController = TextEditingController();
-  late GameState _gameState;
-  late GameUser _gameUser;
+  late GameState gameState;
+  late GameUser gameUser;
 
   @override
   void dispose() {
@@ -28,7 +28,6 @@ class _NewMessageState extends ConsumerState<NewMessage> {
 
   void _submitMessage() async {
     final enteredMessage = _messageController.text;
-    //_gameRoom = ref.watch(gameRoomProvider);
 
     if (enteredMessage.trim().isEmpty) {
       return;
@@ -37,25 +36,24 @@ class _NewMessageState extends ConsumerState<NewMessage> {
     FocusScope.of(context).unfocus();
     _messageController.clear();
 
-    await _gameState.getRemote(_gameState.id);
-    _gameState.messages ??= [];
-    _gameState.messages!.add(
+    gameState = await GameState.getRemote(gameState.id);
+    gameState.messages.add(
       {
         'text': enteredMessage,
         'createdAt': Timestamp.now(),
-        'userId': _gameUser.uid,
-        'nickname': _gameUser.nickname,
-        'userImage': _gameUser.imageUrl,
+        'userId': gameUser.uid,
+        'nickname': gameUser.name,
+        'userImage': gameUser.imageUrl,
       },
     );
-    await _gameState.setRemote();
-    ref.read(gameStateProvider.notifier).setGameState(_gameState);
+    await gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(gameState);
   }
 
   @override
   Widget build(BuildContext context) {
-    _gameState = ref.watch(gameStateProvider);
-    _gameUser = ref.watch(gameUserProvider);
+    gameState = ref.watch(gameStateProvider);
+    gameUser = ref.watch(gameUserProvider);
 
     return Padding(
       padding: const EdgeInsets.only(left: 15, right: 1, bottom: 14),

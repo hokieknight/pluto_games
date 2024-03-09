@@ -16,8 +16,8 @@ class JoinGameScreen extends ConsumerStatefulWidget {
 class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
   final _nameController = TextEditingController();
   final _gameIDController = TextEditingController();
-  late GameUser _gameUser;
-  late GameState _gameState;
+  late GameUser gameUser;
+  late GameState gameState;
 
   @override
   void dispose() {
@@ -65,19 +65,18 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
       return;
     }
 
-    if (_nameController.text.trim() != _gameUser.nickname) {
-      _gameUser.nickname = _nameController.text.trim();
-      ref.read(gameUserProvider.notifier).setUser(_gameUser);
-      _gameUser.saveRemote();
+    if (_nameController.text.trim() != gameUser.name) {
+      gameUser.name = _nameController.text.trim();
+      ref.read(gameUserProvider.notifier).setUser(gameUser);
+      gameUser.saveRemote();
     }
 
-    await _gameState.getRemote(_gameIDController.text.trim());
-    _gameState.players ??= [];
-    _gameState.players!.add(
-      {'id': _gameUser.uid, 'name': _gameUser.nickname},
+    gameState = await GameState.getRemote(_gameIDController.text.trim());
+    gameState.players.add(
+      {'id': gameUser.uid, 'name': gameUser.name},
     );
-    await _gameState.setRemote();
-    ref.read(gameStateProvider.notifier).setGameState(_gameState);
+    await gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(gameState);
 
     if (!mounted) return;
     Navigator.of(context).push(
@@ -89,9 +88,9 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _gameUser = ref.watch(gameUserProvider);
-    _gameState = ref.watch(gameStateProvider);
-    _nameController.text = _gameUser.nickname;
+    gameUser = ref.watch(gameUserProvider);
+    gameState = ref.watch(gameStateProvider);
+    _nameController.text = gameUser.name;
 
     return Scaffold(
       appBar: AppBar(

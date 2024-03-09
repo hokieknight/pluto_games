@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/secret_sith_game_data.dart';
-import 'package:pluto_games/models/secret_sith_player_data.dart';
+import 'package:pluto_games/models/sith_game_data.dart';
+import 'package:pluto_games/models/sith_player_data.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 
-class SecretSithPlayers extends ConsumerStatefulWidget {
-  const SecretSithPlayers({super.key});
+class SithPlayers extends ConsumerStatefulWidget {
+  const SithPlayers({super.key});
 
   @override
-  ConsumerState<SecretSithPlayers> createState() => _SecretSithPlayersState();
+  ConsumerState<SithPlayers> createState() => _SecretSithPlayersState();
 }
 
-class _SecretSithPlayersState extends ConsumerState<SecretSithPlayers> {
-  late SecretSithGameData _sithGameData;
+class _SecretSithPlayersState extends ConsumerState<SithPlayers> {
+  late SithGameData _sithGameData;
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +21,33 @@ class _SecretSithPlayersState extends ConsumerState<SecretSithPlayers> {
     _sithGameData = ref.watch(sithGameDataProvider);
 
     return ListView.builder(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(4),
       itemCount: _sithGameData.sithPlayers.length,
       itemBuilder: (BuildContext context, int index) {
-        SecretSithPlayerData player = _sithGameData.sithPlayers[index];
+        SithPlayerData player = _sithGameData.sithPlayers[index];
+        String title = '';
+        if (player.isViceChair) {
+          title = 'Vice Chair';
+        } else if (player.isPrevViceChair) {
+          title = 'Previous Vice Chair';
+        } else if (player.isPrimeChancellor) {
+          title = 'Prime Chancellor';
+        } else if (player.isPrevPrimeChancellor) {
+          title = 'Previous Prime Chancellor';
+        }
         return Row(
           children: [
-            CircleAvatar(
-              backgroundImage: null,
-              backgroundColor: theme.colorScheme.primary.withAlpha(180),
-              radius: 23,
-              child: Text(player.name),
+            Column(
+              children: [
+                CircleAvatar(
+                  backgroundImage: null,
+                  backgroundColor: theme.colorScheme.primary.withAlpha(180),
+                  radius: 23,
+                  child: Text(player.name),
+                ),
+                //Text(player.name),
+                Text(title),
+              ],
             ),
             FlipCard(
               rotateSide: RotateSide.left,
@@ -65,9 +81,6 @@ class _SecretSithPlayersState extends ConsumerState<SecretSithPlayers> {
                 height: 200,
               ),
             ),
-            if (player.isViceChair)
-              Image.asset('images/SecretSith_v1.0/Cards/VC.jpg',
-                  width: 100, height: 200),
           ],
         );
 

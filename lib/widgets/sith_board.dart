@@ -1,18 +1,15 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//import 'package:pluto_games/models/secret_sith_game_data.dart';
-//import 'package:pluto_games/providers/sith_game_data_provider.dart';
-import 'package:pluto_games/widgets/secret_sith_players.dart';
+import 'package:pluto_games/widgets/sith_players.dart';
 
-class SecretSithBoard extends ConsumerStatefulWidget {
-  const SecretSithBoard({super.key});
+class SithBoard extends ConsumerStatefulWidget {
+  const SithBoard({super.key});
 
   @override
-  ConsumerState<SecretSithBoard> createState() => _SecretSithBoardState();
+  ConsumerState<SithBoard> createState() => _SecretSithBoardState();
 }
 
-class _SecretSithBoardState extends ConsumerState<SecretSithBoard> {
+class _SecretSithBoardState extends ConsumerState<SithBoard> {
   //late SecretSithGameData _sithGameData;
 
   @override
@@ -28,7 +25,7 @@ class _SecretSithBoardState extends ConsumerState<SecretSithBoard> {
     // }
 
     return const Expanded(
-      child: SecretSithPlayers(),
+      child: SithPlayers(),
     );
 
     // return Expanded(

@@ -28,11 +28,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (_isLogin) {
         await _firebase.signInWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
-        //_loadUser(userCred);
       } else {
         await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
-        //_loadUser(userCred);
       }
     } on FirebaseAuthException catch (error) {
       //if (error.code == 'email-already-in-use') {}

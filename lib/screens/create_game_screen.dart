@@ -88,20 +88,19 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
       return;
     }
 
-    if (_nameController.text.trim() != _gameUser.nickname) {
-      _gameUser.nickname = _nameController.text.trim();
+    if (_nameController.text.trim() != _gameUser.name) {
+      _gameUser.name = _nameController.text.trim();
       ref.read(gameUserProvider.notifier).setUser(_gameUser);
       _gameUser.saveRemote();
     }
 
     GameState gameState = GameState.newGame(
       name: _gameNameController.text.trim(),
-      gameType: gameTypeNames[_selectedGameType],
+      gameType: gameTypeNames[_selectedGameType]!,
       numPlayers: numPlayers,
     );
-    gameState.players ??= [];
-    gameState.players!.add(
-      {'id': _gameUser.uid, 'name': _gameUser.nickname},
+    gameState.players.add(
+      {'id': _gameUser.uid, 'name': _gameUser.name},
     );
     await gameState.addRemote();
     ref.read(gameStateProvider.notifier).setGameState(gameState);
@@ -118,7 +117,7 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
   @override
   Widget build(BuildContext context) {
     _gameUser = ref.watch(gameUserProvider);
-    _nameController.text = _gameUser.nickname;
+    _nameController.text = _gameUser.name;
 
     return Scaffold(
       appBar: AppBar(

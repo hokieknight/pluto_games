@@ -6,7 +6,6 @@ import 'package:pluto_games/screens/main_screen.dart';
 import 'package:pluto_games/screens/splash_screen.dart';
 import 'firebase_options.dart';
 //import 'package:google_fonts/google_fonts.dart';
-
 import 'package:pluto_games/screens/login_screen.dart';
 
 void main() async {

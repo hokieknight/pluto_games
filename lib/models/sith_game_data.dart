@@ -1,18 +1,18 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pluto_games/models/secret_sith_player_data.dart';
+import 'package:pluto_games/models/sith_player_data.dart';
 
-class SecretSithGameData {
+class SithGameData {
   String id = "";
-  String gameID;
+  String gameID = "";
   int numPlayers = 0;
-  Timestamp? createdAt;
-  List<SecretSithPlayerData> sithPlayers = [];
+  Timestamp createdAt = Timestamp.now();
+  List<SithPlayerData> sithPlayers = [];
 
-  SecretSithGameData() : gameID = "-1";
+  SithGameData();
 
-  SecretSithGameData.newGame({
+  SithGameData.newGame({
     required this.gameID,
     required gamePlayers,
   }) {
@@ -32,8 +32,8 @@ class SecretSithGameData {
     temp.shuffle();
 
     for (var player in gamePlayers!) {
-      SecretSithPlayerData newPlayer =
-          SecretSithPlayerData(id: player['id'], name: player['name']);
+      SithPlayerData newPlayer =
+          SithPlayerData(id: player['id'], name: player['name']);
       int index = temp.indexOf(newPlayer.id);
       if (index == 0) {
         newPlayer.role = "role-sep1-palp";
@@ -51,18 +51,24 @@ class SecretSithGameData {
     sithPlayers[Random().nextInt(sithPlayers.length)].isViceChair = true;
   }
 
-  // SecretSithGameData.fromJson(Map<String, dynamic> json)
-  //     : name = json['name'] as String,
-  //       email = json['email'] as String;
+  SithGameData.fromJson(String newid, Map<String, dynamic> json)
+      : id = newid,
+        gameID = json['gameID'] as String,
+        numPlayers = json['numPlayers'] as int,
+        createdAt = json['createdAt'] as Timestamp,
+        sithPlayers = List<SithPlayerData>.from(
+            json['sithPlayers'].map((model) => SithPlayerData.fromJson(model)));
 
-  // Map<String, dynamic> toJson() => {
-  //       'id': id,
-  //       'numPlayers': numPlayers,
-  //       'sithPlayers': sithPlayers,
-  //     };
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'gameID': gameID,
+        'numPlayers': numPlayers,
+        'createdAt': createdAt,
+        'sithPlayers': sithPlayers.map((e) => e.toJson()),
+      };
 
   Future<void> addRemote() async {
-    await FirebaseFirestore.instance.collection('secret_sith_game_data').add({
+    await FirebaseFirestore.instance.collection('sith_game_data').add({
       'gameID': gameID,
       'numPlayers': numPlayers,
       'createdAt': Timestamp.now(),

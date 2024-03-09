@@ -4,16 +4,10 @@ import 'package:pluto_games/models/game_state.dart';
 class GameStateNotifier extends StateNotifier<GameState> {
   GameStateNotifier()
       : super(
-          GameState(
-            id: null,
-            name: null,
-            numPlayers: null,
-            gameType: null,
-            createdAt: null,
-            players: null,
-            messages: null,
-            gameStarted: null,
-            gameDataID: null,
+          GameState.newGame(
+            name: "",
+            numPlayers: 0,
+            gameType: "",
           ),
         );
 

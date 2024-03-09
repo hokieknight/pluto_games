@@ -5,10 +5,8 @@ class GameUserNotifier extends StateNotifier<GameUser> {
   GameUserNotifier()
       : super(
           GameUser(
-            uid: '??',
-            email: '??',
-            nickname: '??',
-            imageUrl: '??',
+            uid: "",
+            email: "",
           ),
         );
 

@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pluto_games/models/secret_sith_game_data.dart';
+import 'package:pluto_games/models/sith_game_data.dart';
 
-class SithGameDataNotifier extends StateNotifier<SecretSithGameData> {
+class SithGameDataNotifier extends StateNotifier<SithGameData> {
   SithGameDataNotifier()
       : super(
-          SecretSithGameData(),
+          SithGameData(),
         );
 
-  void setSithGameData(SecretSithGameData gameData) {
+  void setSithGameData(SithGameData gameData) {
     state = gameData;
   }
 }
 
 final sithGameDataProvider =
-    StateNotifierProvider<SithGameDataNotifier, SecretSithGameData>((ref) {
+    StateNotifierProvider<SithGameDataNotifier, SithGameData>((ref) {
   return SithGameDataNotifier();
 });

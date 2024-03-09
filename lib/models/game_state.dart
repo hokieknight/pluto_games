@@ -10,26 +10,26 @@ const gameTypeNames = {
 };
 
 class GameState {
-  String? id;
-  String? name;
-  int? numPlayers;
-  String? gameType;
-  Timestamp? createdAt;
-  List<dynamic>? players;
-  List<dynamic>? messages;
-  bool? gameStarted;
-  String? gameDataID;
+  String id;
+  String name;
+  int numPlayers;
+  String gameType;
+  Timestamp createdAt;
+  List<dynamic> players;
+  List<dynamic> messages;
+  bool gameStarted;
+  String gameDataID;
 
   GameState.newGame({
-    this.id = '-1',
+    this.id = "",
     required this.name,
     required this.numPlayers,
     required this.gameType,
   })  : createdAt = Timestamp.now(),
-        players = null,
-        messages = null,
+        players = [],
+        messages = [],
         gameStarted = false,
-        gameDataID = null;
+        gameDataID = "";
 
   GameState({
     required this.id,
@@ -102,25 +102,39 @@ class GameState {
     });
   }
 
-  Future<GameState> getRemote(id) async {
-    final ref = FirebaseFirestore.instance.collection('game_state').doc(id);
-    //.withConverter(
-    //  fromFirestore: GameState.fromFirestore,
-    //  toFirestore: (GameState GameState, _) => GameState.toFirestore(),
-    //);
-    DocumentSnapshot doc = await ref.get();
-    final data = doc.data() as Map<String, dynamic>;
+  static Future<GameState> getRemote(id) async {
+    final ref =
+        await FirebaseFirestore.instance.collection('game_state').doc(id).get();
 
-    this.id = doc.id;
-    name = data['name'];
-    numPlayers = data['numPlayers'];
-    gameType = data['gameType'];
-    createdAt = data['createdAt'];
-    players = data['players'];
-    messages = data['messages'];
-    gameStarted = data['gameStarted'];
-    gameDataID = data['gameDataID'];
-
-    return this;
+    if (ref.data() != null) {
+      final data = ref.data()!;
+      return GameState.fromJson(id, data);
+    } else {
+      return GameState.newGame(
+          id: id, name: "Not Found", numPlayers: 0, gameType: "");
+    }
   }
+
+  GameState.fromJson(String newid, Map<String, dynamic> json)
+      : id = newid,
+        name = json['name'] as String,
+        numPlayers = json['numPlayers'] as int,
+        gameType = json['gameType'] as String,
+        createdAt = json['createdAt'] as Timestamp,
+        players = json['players'],
+        messages = json['messages'],
+        gameStarted = json['gameStarted'] as bool,
+        gameDataID = json['gameDataID'] as String;
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'numPlayers': numPlayers,
+        'gameType': gameType,
+        'createdAt': createdAt,
+        'players': players,
+        'messages': messages,
+        'gameStarted': gameStarted,
+        'gameDataID': gameDataID,
+      };
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pluto_games/models/game_state.dart';
 
 class GameInfoWidget extends StatelessWidget {
-  final Map<String, dynamic> data;
-  final String gameID;
+  final GameState gameState;
 
-  const GameInfoWidget({super.key, required this.gameID, required this.data});
+  const GameInfoWidget(this.gameState, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final players = data['players'] as List<dynamic>;
+    final players = gameState.players;
 
     return Expanded(
       child: Column(
@@ -16,21 +16,20 @@ class GameInfoWidget extends StatelessWidget {
           Row(
             children: [
               //const Text('Game Type: '),
-              Text(data['gameType'].toString()),
+              Text(gameState.gameType),
             ],
           ),
           //const SizedBox(width: 10),
           Row(
             children: [
               const Text('# Players: '),
-              Text('${players.length} / ${data['numPlayers'].toString()}'),
+              Text('${players.length} / ${gameState.numPlayers}'),
             ],
           ),
           Row(
             children: [
               const Text('Game ID: '),
-              //SelectableText(_gameState.id!),
-              SelectableText(gameID),
+              SelectableText(gameState.id),
             ],
           ),
           Expanded(

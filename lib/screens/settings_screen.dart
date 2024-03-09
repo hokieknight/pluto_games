@@ -12,8 +12,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _formKey = GlobalKey<FormState>();
-  late GameUser _gameUser;
-  //String _enteredNickname = '';
+  late GameUser gameUser;
 
   void _saveSettings() {
     final isValid = _formKey.currentState!.validate();
@@ -22,28 +21,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
     _formKey.currentState!.save();
 
-    ref.read(gameUserProvider.notifier).setUser(_gameUser);
-    //_saveSettingsRemote(_gameUser);
-    _gameUser.saveRemote();
+    ref.read(gameUserProvider.notifier).setUser(gameUser);
+    gameUser.saveRemote();
 
     Navigator.of(context).pop();
   }
 
-  // Future<void> _saveSettingsRemote(GameUser gameUser) async {
-  //   //final gameUser = ref.watch(gameUserProvider);
-  //   await FirebaseFirestore.instance
-  //       .collection('game_users')
-  //       .doc(gameUser.uid)
-  //       .set({
-  //     'email': gameUser.email,
-  //     'nickname': gameUser.nickname,
-  //     'image_url': gameUser.imageUrl,
-  //   });
-  //}
-
   @override
   Widget build(BuildContext context) {
-    _gameUser = ref.watch(gameUserProvider);
+    gameUser = ref.watch(gameUserProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -72,12 +58,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         //mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('UserID: ${_gameUser.uid}'),
-                          Text('Email: ${_gameUser.email}'),
+                          Text('UserID: ${gameUser.uid}'),
+                          Text('Email: ${gameUser.email}'),
                           TextFormField(
-                            initialValue: _gameUser.nickname,
+                            initialValue: gameUser.name,
                             decoration: const InputDecoration(
-                              labelText: 'Nickname',
+                              labelText: 'Name',
                             ),
                             autocorrect: false,
                             enableSuggestions: false,
@@ -88,10 +74,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _gameUser.nickname = value!;
+                              gameUser.name = value!;
                             },
                           ),
-                          Text('Image URL: ${_gameUser.imageUrl}'),
+                          Text('Image URL: ${gameUser.imageUrl}'),
                           const SizedBox(height: 12),
                           Row(
                             children: [
