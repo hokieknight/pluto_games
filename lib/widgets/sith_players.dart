@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
 import 'package:pluto_games/models/sith_player_data.dart';
-import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 
-class SithPlayers extends ConsumerStatefulWidget {
-  const SithPlayers({super.key});
-
-  @override
-  ConsumerState<SithPlayers> createState() => _SecretSithPlayersState();
-}
-
-class _SecretSithPlayersState extends ConsumerState<SithPlayers> {
-  late SithGameData _sithGameData;
+class SithPlayers extends StatelessWidget {
+  final SithGameData sithGameData;
+  const SithPlayers(this.sithGameData, {super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    _sithGameData = ref.watch(sithGameDataProvider);
 
     return ListView.builder(
       padding: const EdgeInsets.all(4),
-      itemCount: _sithGameData.sithPlayers.length,
+      itemCount: sithGameData.sithPlayers.length,
       itemBuilder: (BuildContext context, int index) {
-        SithPlayerData player = _sithGameData.sithPlayers[index];
+        SithPlayerData player = sithGameData.sithPlayers[index];
         String title = '';
         if (player.isViceChair) {
           title = 'Vice Chair';

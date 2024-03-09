@@ -45,6 +45,12 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
     ref.read(gameStateProvider.notifier).setGameState(gameState);
   }
 
+  void _stopGame() async {
+    gameState.gameStarted = false;
+    await gameState.setRemote();
+    ref.read(gameStateProvider.notifier).setGameState(gameState);
+  }
+
   @override
   Widget build(BuildContext context) {
     //final authenticatedUser = FirebaseAuth.instance.currentUser!;
@@ -103,12 +109,13 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
                     child: const Text('Leave'),
                   ),
                   ElevatedButton(
-                    onPressed: _startGame,
+                    onPressed: gameState.gameStarted ? _stopGame : _startGame,
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    child: const Text('Start Game'),
+                    child: Text(
+                        gameState.gameStarted ? 'Stop Game' : 'Start Game'),
                   ),
                 ],
               ),

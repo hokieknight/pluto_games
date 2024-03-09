@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/game_user.dart';
+import 'package:pluto_games/models/sith_game_data.dart';
+import 'package:pluto_games/models/sith_player_data.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
+import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/screens/lobby_screen.dart';
 
 class JoinGameScreen extends ConsumerStatefulWidget {
@@ -72,11 +75,31 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
     }
 
     gameState = await GameState.getRemote(_gameIDController.text.trim());
-    gameState.players.add(
-      {'id': gameUser.uid, 'name': gameUser.name},
-    );
-    await gameState.setRemote();
+    int index =
+        gameState.players.indexWhere((item) => item['id'] == gameUser.uid);
+    if (index < 0) {
+      gameState.players.add(
+        {'id': gameUser.uid, 'name': gameUser.name},
+      );
+      await gameState.setRemote();
+    }
     ref.read(gameStateProvider.notifier).setGameState(gameState);
+
+    if (gameState.gameDataID.isNotEmpty) {
+      if (gameState.gameType == 'Secret Sith') {
+        SithGameData sithGameData =
+            await SithGameData.getRemote(gameState.gameDataID);
+
+        int index = sithGameData.sithPlayers
+            .indexWhere((item) => item.id == gameUser.uid);
+        if (index < 0) {
+          sithGameData.sithPlayers
+              .add(SithPlayerData(id: gameUser.uid, name: gameUser.name));
+          await sithGameData.addRemote();
+        }
+        ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
+      }
+    }
 
     if (!mounted) return;
     Navigator.of(context).push(

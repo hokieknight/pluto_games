@@ -75,4 +75,18 @@ class SithGameData {
       'sithPlayers': sithPlayers.map((e) => e.toJson()).toList(),
     }).then((value) => id = value.id);
   }
+
+  static Future<SithGameData> getRemote(id) async {
+    final ref = await FirebaseFirestore.instance
+        .collection('sith_game_data')
+        .doc(id)
+        .get();
+
+    if (ref.data() != null) {
+      final data = ref.data()!;
+      return SithGameData.fromJson(id, data);
+    } else {
+      return SithGameData();
+    }
+  }
 }
