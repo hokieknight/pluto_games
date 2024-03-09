@@ -67,6 +67,7 @@ flutter:
   assets:
     - images/SecretSith_v1.0/Playmats/
     - images/SecretSith_v1.0/Cards/
+    - images/
 
   #  - images/SecretSith_v1.0/Playmats/Playmat_Loyalist.jpg
   #  - images/SecretSith_v1.0/Playmats/Playmat_Separatist5-6.jpg
