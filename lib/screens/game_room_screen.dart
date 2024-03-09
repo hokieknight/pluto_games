@@ -6,14 +6,14 @@ import 'package:pluto_games/widgets/chat_messages.dart';
 import 'package:pluto_games/widgets/game_room.dart';
 import 'package:pluto_games/widgets/new_message.dart';
 
-class LobbyScreen extends ConsumerStatefulWidget {
-  const LobbyScreen({super.key});
+class GameRoomScreen extends ConsumerStatefulWidget {
+  const GameRoomScreen({super.key});
 
   @override
-  ConsumerState<LobbyScreen> createState() => _LobbyScreenState();
+  ConsumerState<GameRoomScreen> createState() => _GameRoomScreenState();
 }
 
-class _LobbyScreenState extends ConsumerState<LobbyScreen> {
+class _GameRoomScreenState extends ConsumerState<GameRoomScreen> {
   late GameState _gameState;
 
   @override
@@ -23,7 +23,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Pluto Games - Room - ${_gameState.name}'),
+        title: Text('Pluto Games - ${_gameState.gameType}'),
       ),
       body: const Column(
         children: [

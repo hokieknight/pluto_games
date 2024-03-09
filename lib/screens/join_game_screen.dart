@@ -7,7 +7,7 @@ import 'package:pluto_games/models/sith_player_data.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
-import 'package:pluto_games/screens/lobby_screen.dart';
+import 'package:pluto_games/screens/game_room_screen.dart';
 
 class JoinGameScreen extends ConsumerStatefulWidget {
   const JoinGameScreen({super.key});
@@ -104,7 +104,7 @@ class _JoinGameScreenState extends ConsumerState<JoinGameScreen> {
     if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => const LobbyScreen(),
+        builder: (ctx) => const GameRoomScreen(),
       ),
     );
   }

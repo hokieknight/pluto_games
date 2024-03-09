@@ -5,7 +5,7 @@ import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
-import 'package:pluto_games/screens/lobby_screen.dart';
+import 'package:pluto_games/screens/game_room_screen.dart';
 
 class CreateGameScreen extends ConsumerStatefulWidget {
   const CreateGameScreen({super.key});
@@ -109,7 +109,7 @@ class _CreateGameScreenState extends ConsumerState<CreateGameScreen> {
     if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => const LobbyScreen(),
+        builder: (ctx) => const GameRoomScreen(),
       ),
     );
   }
