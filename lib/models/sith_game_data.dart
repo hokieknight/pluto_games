@@ -9,6 +9,8 @@ class SithGameData {
   int numPlayers = 0;
   Timestamp createdAt = Timestamp.now();
   List<SithPlayerData> sithPlayers = [];
+  int turn = 1;
+  String phase = "pick-chancellor";
 
   SithGameData();
 
@@ -51,13 +53,22 @@ class SithGameData {
     sithPlayers[Random().nextInt(sithPlayers.length)].isViceChair = true;
   }
 
+  bool isSelectPC(String uid) {
+    if (phase != "pick-chancellor") return false;
+    int index = sithPlayers.indexWhere((element) => element.id == uid);
+    if (index < 0) return false;
+    return sithPlayers[index].isViceChair;
+  }
+
   SithGameData.fromJson(String newid, Map<String, dynamic> json)
       : id = newid,
         gameID = json['gameID'] as String,
         numPlayers = json['numPlayers'] as int,
         createdAt = json['createdAt'] as Timestamp,
         sithPlayers = List<SithPlayerData>.from(
-            json['sithPlayers'].map((model) => SithPlayerData.fromJson(model)));
+            json['sithPlayers'].map((model) => SithPlayerData.fromJson(model))),
+        turn = json['turn'] as int,
+        phase = json['phase'] as String;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -65,6 +76,8 @@ class SithGameData {
         'numPlayers': numPlayers,
         'createdAt': createdAt,
         'sithPlayers': sithPlayers.map((e) => e.toJson()),
+        'turn': turn,
+        'phase': phase,
       };
 
   Future<void> addRemote() async {
@@ -73,6 +86,8 @@ class SithGameData {
       'numPlayers': numPlayers,
       'createdAt': Timestamp.now(),
       'sithPlayers': sithPlayers.map((e) => e.toJson()).toList(),
+      'turn': turn,
+      'phase': phase,
     }).then((value) => id = value.id);
   }
 
@@ -88,5 +103,16 @@ class SithGameData {
     } else {
       return SithGameData();
     }
+  }
+
+  Future<void> setRemote() async {
+    await FirebaseFirestore.instance.collection('sith_game_data').doc(id).set({
+      'gameID': gameID,
+      'numPlayers': numPlayers,
+      'createdAt': Timestamp.now(),
+      'sithPlayers': sithPlayers.map((e) => e.toJson()).toList(),
+      'turn': turn,
+      'phase': phase,
+    });
   }
 }

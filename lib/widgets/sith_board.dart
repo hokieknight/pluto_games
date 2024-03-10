@@ -58,9 +58,20 @@ class _SithBoardState extends ConsumerState<SithBoard> {
           Map<String, dynamic>? data = snapshot.data!.data();
           sithGameData = SithGameData.fromJson(gameState.gameDataID, data!);
           //ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
+          //setState(() {});
 
-          return Expanded(
-            child: SithPlayers(sithGameData),
+          return Column(
+            children: [
+              const Text('Vice Chair Nominate Prime Chancellor'),
+              Container(
+                margin: const EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
+                height: 360,
+                //decoration:
+                //    BoxDecoration(border: Border.all(color: Colors.red)),
+                child: const SithPlayers(),
+              ),
+            ],
           );
         });
 

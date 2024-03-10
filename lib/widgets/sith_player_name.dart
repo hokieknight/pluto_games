@@ -3,7 +3,36 @@ import 'package:pluto_games/models/sith_player_data.dart';
 
 class SithPlayerName extends StatelessWidget {
   final SithPlayerData player;
-  const SithPlayerName(this.player, {super.key});
+  //final bool selectable;
+  final void Function(SithPlayerData)? nominatePC;
+  const SithPlayerName(this.player, this.nominatePC, {super.key});
+
+  void onTap(BuildContext context) {
+    if (nominatePC == null) return;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Nominate Prime Chancellor'),
+        content: Text('Confirm nomination of ${player.name}'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              nominatePC!(player);
+            },
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +41,20 @@ class SithPlayerName extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(4),
       padding: const EdgeInsets.all(4),
+      width: 100,
       //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
       child: Column(
         children: [
-          CircleAvatar(
-            backgroundImage: null,
-            backgroundColor: theme.colorScheme.primary.withAlpha(180),
-            radius: 23,
-            child: Text(player.name),
+          InkWell(
+            onTap: () {
+              onTap(context);
+            },
+            child: CircleAvatar(
+              backgroundImage: null,
+              backgroundColor: theme.colorScheme.primary.withAlpha(180),
+              radius: 24,
+              child: Text(player.name),
+            ),
           ),
           //Text(player.name),
           if (player.isViceChair) const Text('Vice'),
