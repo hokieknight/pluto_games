@@ -30,6 +30,7 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
         .indexWhere((element) => element.id == player.id);
     if (index < 0) return;
     sithGameData.sithPlayers[index].isPrimeChancellor = true;
+    sithGameData.nextPhase();
 
     ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
     sithGameData.setRemote();
@@ -67,6 +68,10 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                     'images/SecretSith_v1.0/Cards/${player.membership}.jpg'),
                 MyFlipCard('images/SecretSith_v1.0/Cards/role-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.role}.jpg'),
+                if (sithGameData.isVotePhase() && player.vote.isNotEmpty)
+                  Image.asset(
+                      "images/SecretSith_v1.0/Cards/confidence-back.jpg",
+                      width: 120),
               ],
             );
           },

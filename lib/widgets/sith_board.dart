@@ -7,6 +7,7 @@ import 'package:pluto_games/models/snapshot_handler.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/sith_players.dart';
+import 'package:pluto_games/widgets/sith_vote.dart';
 
 class SithBoard extends ConsumerStatefulWidget {
   const SithBoard({super.key});
@@ -46,11 +47,12 @@ class _SithBoardState extends ConsumerState<SithBoard> {
 
           return Column(
             children: [
-              const Text('Vice Chair Nominate Prime Chancellor'),
+              Text(sithGameData.getGamePhaseTitle()),
+              if (sithGameData.isVotePhase()) const SithVote(),
               Container(
                 margin: const EdgeInsets.all(2),
                 padding: const EdgeInsets.all(2),
-                height: 360,
+                height: sithGameData.isVotePhase() ? 280 : 360,
                 //decoration:
                 //    BoxDecoration(border: Border.all(color: Colors.red)),
                 child: const SithPlayers(),
@@ -58,24 +60,5 @@ class _SithBoardState extends ConsumerState<SithBoard> {
             ],
           );
         });
-
-    // return Expanded(
-    //   child: ListView(
-    //     children: [
-    //       const SecretSithPlayers(),
-    //       SizedBox(
-    //         width: 600,
-    //         height: 200,
-    //         child: Image.asset(
-    //             'images/SecretSith_v1.0/Playmats/Playmat_Loyalist.jpg'),
-    //       ),
-    //       SizedBox(
-    //         width: 600,
-    //         height: 200,
-    //         child: Image.asset('images/SecretSith_v1.0/Playmats/$sepPlaymat'),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

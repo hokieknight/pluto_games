@@ -60,6 +60,47 @@ class SithGameData {
     return sithPlayers[index].isViceChair;
   }
 
+  SithPlayerData? getPlayerByID(String uid) {
+    int index = sithPlayers.indexWhere((element) => element.id == uid);
+    if (index < 0) return null;
+    return sithPlayers[index];
+  }
+
+  SithPlayerData? getPrimeChancellor() {
+    int index =
+        sithPlayers.indexWhere((element) => element.isPrimeChancellor == true);
+    if (index < 0) return null;
+    return sithPlayers[index];
+  }
+
+  String getGamePhaseTitle() {
+    if (phase == "pick-chancellor") {
+      return "Vice Chair Nominate Prime Chancellor";
+    }
+    if (phase == "vote-chancellor") {
+      SithPlayerData? pcPlayer = getPrimeChancellor();
+      if (null != pcPlayer) {
+        return "Vote for ${pcPlayer.name} as Prime Chancellor";
+      }
+      return "No Prime Chancellor to Vote For";
+    }
+    return "";
+  }
+
+  bool isVotePhase() {
+    return phase == "vote-chancellor";
+  }
+
+  void castVote(String uid, String vote) {
+    int index = sithPlayers.indexWhere((element) => element.id == uid);
+    if (index < 0) return;
+    sithPlayers[index].vote = vote;
+  }
+
+  void nextPhase() {
+    if (phase == "pick-chancellor") phase = "vote-chancellor";
+  }
+
   SithGameData.fromJson(String newid, Map<String, dynamic> json)
       : id = newid,
         gameID = json['gameID'] as String,
