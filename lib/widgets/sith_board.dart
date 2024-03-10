@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
+import 'package:pluto_games/models/snapshot_handler.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/sith_players.dart';
@@ -37,28 +38,11 @@ class _SithBoardState extends ConsumerState<SithBoard> {
             .doc(gameState.gameDataID)
             .snapshots(),
         builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          if (!snapshot.hasData) {
-            return const Center(
-              child: Text('Game not found.'),
-            );
-          }
-
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Something went wrong...'),
-            );
-          }
+          Widget? widget = handleSnapshot(snapshot, "Sith Game");
+          if (widget != null) return widget;
 
           Map<String, dynamic>? data = snapshot.data!.data();
           sithGameData = SithGameData.fromJson(gameState.gameDataID, data!);
-          //ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
-          //setState(() {});
 
           return Column(
             children: [

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
+import 'package:pluto_games/models/snapshot_handler.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
@@ -64,33 +65,12 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
           .collection('game_state')
           .doc(gameState.id)
           .snapshots(),
-      builder: (ctx, gameStateSnapshot) {
-        if (gameStateSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+      builder: (ctx, snapshot) {
+        Widget? widget = handleSnapshot(snapshot, "Sith Game");
+        if (widget != null) return widget;
 
-        if (!gameStateSnapshot.hasData) {
-          return const Center(
-            child: Text('Game not found.'),
-          );
-        }
-
-        if (gameStateSnapshot.hasError) {
-          return const Center(
-            child: Text('Something went wrong...'),
-          );
-        }
-
-        Map<String, dynamic>? data = gameStateSnapshot.data!.data();
-        if (data == null) {
-          return Center(
-            child: Text('Game not found. ${gameState.id}'),
-          );
-        }
-
-        gameState = GameState.fromJson(gameState.id, data);
+        Map<String, dynamic>? data = snapshot.data!.data();
+        gameState = GameState.fromJson(gameState.id, data!);
 
         Widget gameWidget = GameInfoWidget(gameState);
         if (gameState.gameStarted) {
