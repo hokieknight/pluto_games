@@ -33,12 +33,14 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
 
   void _startGame() async {
     gameState.gameStarted = true;
-    if (gameState.gameType == 'Secret Sith') {
-      SithGameData sithGameData = SithGameData.newGame(
-          gameID: gameState.id, gamePlayers: gameState.players);
-      await sithGameData.addRemote();
-      ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
-      gameState.gameDataID = sithGameData.id;
+    if (gameState.gameDataID.isEmpty) {
+      if (gameState.gameType == 'Secret Sith') {
+        SithGameData sithGameData = SithGameData.newGame(
+            gameID: gameState.id, gamePlayers: gameState.players);
+        await sithGameData.addRemote();
+        ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
+        gameState.gameDataID = sithGameData.id;
+      }
     }
 
     await gameState.setRemote();
