@@ -30,7 +30,7 @@ class GameInfoWidget extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.all(4),
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(4),
             //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

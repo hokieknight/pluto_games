@@ -97,27 +97,33 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
           }
         }
 
-        return Padding(
-          padding: const EdgeInsets.all(4),
+        return Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(8),
+          //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
           child: Column(
             children: [
               gameWidget,
-              Row(
-                children: [
-                  TextButton(
-                    onPressed: _leaveGame,
-                    child: const Text('Leave'),
-                  ),
-                  ElevatedButton(
-                    onPressed: gameState.gameStarted ? _stopGame : _startGame,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primaryContainer,
+              Container(
+                margin: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: _leaveGame,
+                      child: const Text('Leave'),
                     ),
-                    child: Text(
-                        gameState.gameStarted ? 'Stop Game' : 'Start Game'),
-                  ),
-                ],
+                    ElevatedButton(
+                      onPressed: gameState.gameStarted ? _stopGame : _startGame,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      child: Text(
+                          gameState.gameStarted ? 'Stop Game' : 'Start Game'),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
