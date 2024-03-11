@@ -80,8 +80,8 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
         }
 
         return Container(
-          margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(2),
+          padding: const EdgeInsets.all(2),
           //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
           child: Column(
             children: [
@@ -89,6 +89,8 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
               Container(
                 margin: const EdgeInsets.all(4),
                 padding: const EdgeInsets.all(4),
+                //decoration:
+                //    BoxDecoration(border: Border.all(color: Colors.red)),
                 child: Row(
                   children: [
                     TextButton(

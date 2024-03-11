@@ -17,9 +17,9 @@ class SithPlayerName extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      margin: const EdgeInsets.all(4),
-      padding: const EdgeInsets.all(4),
-      width: 100,
+      //margin: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(2),
+      width: 80,
       //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
       child: Column(
         children: [

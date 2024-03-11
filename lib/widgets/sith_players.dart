@@ -89,7 +89,7 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
         sithGameData = SithGameData.fromJson(sithGameData.id, data!);
 
         return ListView.builder(
-          padding: const EdgeInsets.all(4),
+          //padding: const EdgeInsets.all(2),
           itemCount: sithGameData.sithPlayers.length,
           itemBuilder: (BuildContext context, int index) {
             SithPlayerData player = sithGameData.sithPlayers[index];
@@ -103,13 +103,13 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                 if (sithGameData.isVotePhase() && player.vote.isNotEmpty)
                   Image.asset(
                       "images/SecretSith_v1.0/Cards/confidence-back.jpg",
-                      width: 120),
+                      width: 100),
                 if (!sithGameData.isVotePhase() && player.vote == "Yes")
                   Image.asset("images/SecretSith_v1.0/Cards/confidence-yes.jpg",
-                      width: 120),
+                      width: 100),
                 if (!sithGameData.isVotePhase() && player.vote == "No")
                   Image.asset("images/SecretSith_v1.0/Cards/confidence-no.jpg",
-                      width: 120),
+                      width: 100),
               ],
             );
           },

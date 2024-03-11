@@ -10,7 +10,7 @@ class MyFlipCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(4),
+      //margin: const EdgeInsets.all(4),
       padding: const EdgeInsets.all(4),
       //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
       child: FlipCard(
@@ -21,12 +21,12 @@ class MyFlipCard extends StatelessWidget {
         backWidget: Image.asset(
           frontImage,
           //width: 100,
-          height: 150,
+          height: 120,
         ),
         frontWidget: Image.asset(
           backImage,
           //width: 100,
-          height: 150,
+          height: 120,
         ),
       ),
     );
