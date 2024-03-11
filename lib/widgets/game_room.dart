@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pluto_games/controllers/sith_game_controller.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
@@ -36,8 +37,8 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
     gameState.gameStarted = true;
     if (gameState.gameDataID.isEmpty) {
       if (gameState.gameType == 'Secret Sith') {
-        SithGameData sithGameData = SithGameData.newGame(
-            gameID: gameState.id, gamePlayers: gameState.players);
+        SithGameData sithGameData =
+            SithGameController.newGame(gameState.id, gameState.players);
         await sithGameData.addRemote();
         ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
         gameState.gameDataID = sithGameData.id;

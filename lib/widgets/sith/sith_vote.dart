@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pluto_games/controllers/sith_game_controller.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
 import 'package:pluto_games/models/sith_player_data.dart';
@@ -19,14 +20,15 @@ class _SithVoteState extends ConsumerState<SithVote> {
 
   void castVote(String vote) async {
     sithGameData = await SithGameData.getRemote(sithGameData.id);
-    sithGameData.castVote(gameUser.uid, vote);
+    SithGameController.castVote(sithGameData, gameUser.uid, vote);
     ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
     sithGameData.setRemote();
     setState(() {});
   }
 
   void confirmVote(String vote) {
-    SithPlayerData? playerPC = sithGameData.getPrimeChancellor();
+    SithPlayerData? playerPC =
+        SithGameController.getPrimeChancellor(sithGameData);
 
     showDialog(
       context: context,
@@ -60,7 +62,8 @@ class _SithVoteState extends ConsumerState<SithVote> {
   Widget build(BuildContext context) {
     gameUser = ref.watch(gameUserProvider);
     sithGameData = ref.watch(sithGameDataProvider);
-    SithPlayerData? thisPlayer = sithGameData.getPlayerByID(gameUser.uid);
+    SithPlayerData? thisPlayer =
+        SithGameController.getPlayerByID(sithGameData, gameUser.uid);
     if (thisPlayer!.vote.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.all(8.0),

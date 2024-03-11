@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pluto_games/controllers/sith_game_controller.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
 import 'package:pluto_games/models/snapshot_handler.dart';
@@ -51,12 +52,14 @@ class _SithBoardState extends ConsumerState<SithBoard> {
                 const Text("Vote Pass"),
               if (sithGameData.electionResult == "Fail")
                 const Text("Vote Fail"),
-              Text(sithGameData.getGamePhaseTitle()),
-              if (sithGameData.isVotePhase()) const SithVote(),
+              Text(SithGameController.getGamePhaseTitle(sithGameData)),
+              if (SithGameController.isVotePhase(sithGameData))
+                const SithVote(),
               Container(
                 margin: const EdgeInsets.all(2),
                 //padding: const EdgeInsets.all(2),
-                height: sithGameData.isVotePhase() ? 280 : 360,
+                height:
+                    SithGameController.isVotePhase(sithGameData) ? 280 : 360,
                 //decoration:
                 //    BoxDecoration(border: Border.all(color: Colors.red)),
                 child: const SithPlayers(),

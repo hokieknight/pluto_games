@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pluto_games/controllers/sith_game_controller.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
 import 'package:pluto_games/models/sith_player_data.dart';
@@ -23,24 +24,13 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
 
   void _nominatePC(SithPlayerData player) async {
     sithGameData = await SithGameData.getRemote(sithGameData.id);
-
-    for (var player in sithGameData.sithPlayers) {
-      player.isPrimeChancellor = false;
-      player.vote = "";
-    }
-
-    int index = sithGameData.sithPlayers
-        .indexWhere((element) => element.id == player.id);
-    if (index < 0) return;
-    sithGameData.sithPlayers[index].isPrimeChancellor = true;
-    sithGameData.nextPhase();
-
+    SithGameController.nominatePrimeChancellor(sithGameData, player);
     ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
     sithGameData.setRemote();
   }
 
   void nominatePC(BuildContext context, SithPlayerData player) async {
-    bool selectPC = sithGameData.isSelectPC(gameUser.uid);
+    bool selectPC = SithGameController.isSelectPC(sithGameData, gameUser.uid);
     //(selectPC && !player.isViceChair) ? _nominatePC : null
     if (!selectPC) return;
     if (player.isViceChair) return;
@@ -100,14 +90,17 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                     'images/SecretSith_v1.0/Cards/${player.membership}.jpg'),
                 MyFlipCard('images/SecretSith_v1.0/Cards/role-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.role}.jpg'),
-                if (sithGameData.isVotePhase() && player.vote.isNotEmpty)
+                if (SithGameController.isVotePhase(sithGameData) &&
+                    player.vote.isNotEmpty)
                   Image.asset(
                       "images/SecretSith_v1.0/Cards/confidence-back.jpg",
                       width: 80),
-                if (!sithGameData.isVotePhase() && player.vote == "Yes")
+                if (!SithGameController.isVotePhase(sithGameData) &&
+                    player.vote == "Yes")
                   Image.asset("images/SecretSith_v1.0/Cards/confidence-yes.jpg",
                       width: 80),
-                if (!sithGameData.isVotePhase() && player.vote == "No")
+                if (!SithGameController.isVotePhase(sithGameData) &&
+                    player.vote == "No")
                   Image.asset("images/SecretSith_v1.0/Cards/confidence-no.jpg",
                       width: 80),
               ],
