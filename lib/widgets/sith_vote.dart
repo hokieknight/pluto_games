@@ -85,7 +85,7 @@ class _SithVoteState extends ConsumerState<SithVote> {
             },
             child: Image.asset(
                 "images/SecretSith_v1.0/Cards/confidence-yes.jpg",
-                width: 120),
+                width: 80),
           ),
         ),
         Padding(

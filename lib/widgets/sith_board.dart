@@ -47,6 +47,10 @@ class _SithBoardState extends ConsumerState<SithBoard> {
 
           return Column(
             children: [
+              if (sithGameData.electionResult == "Pass")
+                const Text("Vote Pass"),
+              if (sithGameData.electionResult == "Fail")
+                const Text("Vote Fail"),
               Text(sithGameData.getGamePhaseTitle()),
               if (sithGameData.isVotePhase()) const SithVote(),
               Container(

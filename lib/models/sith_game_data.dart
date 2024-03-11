@@ -76,9 +76,6 @@ class SithGameData {
 
   String getGamePhaseTitle() {
     if (phase == "pick-chancellor") {
-      if (electionResult == "Fail") {
-        return "Election Fail - New Vice Chair Nominate New Prime Chancellor";
-      }
       return "Vice Chair Nominate Prime Chancellor";
     }
     if (phase == "vote-chancellor") {
