@@ -6,8 +6,8 @@ import 'package:pluto_games/models/sith_game_data.dart';
 import 'package:pluto_games/models/snapshot_handler.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
-import 'package:pluto_games/widgets/sith_players.dart';
-import 'package:pluto_games/widgets/sith_vote.dart';
+import 'package:pluto_games/widgets/sith/sith_players.dart';
+import 'package:pluto_games/widgets/sith/sith_vote.dart';
 
 class SithBoard extends ConsumerStatefulWidget {
   const SithBoard({super.key});

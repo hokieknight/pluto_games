@@ -8,7 +8,7 @@ import 'package:pluto_games/models/snapshot_handler.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/my_flipcard.dart';
-import 'package:pluto_games/widgets/sith_player_name.dart';
+import 'package:pluto_games/widgets/sith/sith_player_name.dart';
 
 class SithPlayers extends ConsumerStatefulWidget {
   const SithPlayers({super.key});

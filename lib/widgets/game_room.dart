@@ -9,7 +9,7 @@ import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/game_info.dart';
-import 'package:pluto_games/widgets/sith_board.dart';
+import 'package:pluto_games/widgets/sith/sith_board.dart';
 
 class GameRoomWidget extends ConsumerStatefulWidget {
   const GameRoomWidget({super.key});
