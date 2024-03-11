@@ -11,6 +11,7 @@ class SithGameData {
   List<SithPlayerData> sithPlayers = [];
   int turn = 1;
   String phase = "pick-chancellor";
+  String electionResult = "";
 
   SithGameData();
 
@@ -75,6 +76,9 @@ class SithGameData {
 
   String getGamePhaseTitle() {
     if (phase == "pick-chancellor") {
+      if (electionResult == "Fail") {
+        return "Election Fail - New Vice Chair Nominate New Prime Chancellor";
+      }
       return "Vice Chair Nominate Prime Chancellor";
     }
     if (phase == "vote-chancellor") {
@@ -84,6 +88,8 @@ class SithGameData {
       }
       return "No Prime Chancellor to Vote For";
     }
+    if (phase == "select-policy1") return "Vice Chair Select Policies";
+
     return "";
   }
 
@@ -92,9 +98,33 @@ class SithGameData {
   }
 
   void castVote(String uid, String vote) {
-    int index = sithPlayers.indexWhere((element) => element.id == uid);
-    if (index < 0) return;
-    sithPlayers[index].vote = vote;
+    int yesCount = 0;
+    int noCount = 0;
+    int indexVC = 0;
+    int indexPC = 0;
+    for (int index = 0; index < sithPlayers.length; index++) {
+      var player = sithPlayers[index];
+      if (player.id == uid) player.vote = vote;
+      if (player.vote == "Yes") yesCount++;
+      if (player.vote == "No") noCount++;
+      if (player.isViceChair) indexVC = index;
+      if (player.isPrimeChancellor) indexPC = index;
+    }
+
+    // voting is done
+    if ((yesCount + noCount) == sithPlayers.length) {
+      if (yesCount > noCount) {
+        phase = "select-policy1";
+        electionResult = "Pass";
+      } else {
+        phase = "pick-chancellor";
+        sithPlayers[indexVC].isViceChair = false;
+        sithPlayers[indexPC].isPrimeChancellor = false;
+        indexVC = (indexVC + 1) % sithPlayers.length;
+        sithPlayers[indexVC].isViceChair = true;
+        electionResult = "Fail";
+      }
+    }
   }
 
   void nextPhase() {
@@ -109,7 +139,8 @@ class SithGameData {
         sithPlayers = List<SithPlayerData>.from(
             json['sithPlayers'].map((model) => SithPlayerData.fromJson(model))),
         turn = json['turn'] as int,
-        phase = json['phase'] as String;
+        phase = json['phase'] as String,
+        electionResult = json['electionResult'] as String;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -119,6 +150,7 @@ class SithGameData {
         'sithPlayers': sithPlayers.map((e) => e.toJson()),
         'turn': turn,
         'phase': phase,
+        'electionResult': electionResult,
       };
 
   Future<void> addRemote() async {
@@ -129,6 +161,7 @@ class SithGameData {
       'sithPlayers': sithPlayers.map((e) => e.toJson()).toList(),
       'turn': turn,
       'phase': phase,
+      'electionResult': electionResult,
     }).then((value) => id = value.id);
   }
 
@@ -154,6 +187,7 @@ class SithGameData {
       'sithPlayers': sithPlayers.map((e) => e.toJson()).toList(),
       'turn': turn,
       'phase': phase,
+      'electionResult': electionResult,
     });
   }
 }

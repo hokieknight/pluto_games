@@ -21,9 +21,12 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
   late GameUser gameUser;
   late SithGameData sithGameData;
 
-  void _nominatePC(SithPlayerData player) {
+  void _nominatePC(SithPlayerData player) async {
+    sithGameData = await SithGameData.getRemote(sithGameData.id);
+
     for (var player in sithGameData.sithPlayers) {
       player.isPrimeChancellor = false;
+      player.vote = "";
     }
 
     int index = sithGameData.sithPlayers
@@ -36,12 +39,42 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
     sithGameData.setRemote();
   }
 
+  void nominatePC(BuildContext context, SithPlayerData player) async {
+    bool selectPC = sithGameData.isSelectPC(gameUser.uid);
+    //(selectPC && !player.isViceChair) ? _nominatePC : null
+    if (!selectPC) return;
+    if (player.isViceChair) return;
+    if (player.isPrevPrimeChancellor) return;
+    if (player.isPrevViceChair) return;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Nominate Prime Chancellor'),
+        content: Text('Confirm nomination of ${player.name}'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              _nominatePC(player);
+            },
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     gameUser = ref.watch(gameUserProvider);
     sithGameData = ref.watch(sithGameDataProvider);
-
-    bool selectPC = sithGameData.isSelectPC(gameUser.uid);
 
     return StreamBuilder(
       stream: FirebaseFirestore.instance
@@ -62,8 +95,7 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
             SithPlayerData player = sithGameData.sithPlayers[index];
             return Row(
               children: [
-                SithPlayerName(player,
-                    (selectPC && !player.isViceChair) ? _nominatePC : null),
+                SithPlayerName(player, nominatePC),
                 MyFlipCard('images/SecretSith_v1.0/Cards/membership-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.membership}.jpg'),
                 MyFlipCard('images/SecretSith_v1.0/Cards/role-back.jpg',
@@ -71,6 +103,12 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                 if (sithGameData.isVotePhase() && player.vote.isNotEmpty)
                   Image.asset(
                       "images/SecretSith_v1.0/Cards/confidence-back.jpg",
+                      width: 120),
+                if (!sithGameData.isVotePhase() && player.vote == "Yes")
+                  Image.asset("images/SecretSith_v1.0/Cards/confidence-yes.jpg",
+                      width: 120),
+                if (!sithGameData.isVotePhase() && player.vote == "No")
+                  Image.asset("images/SecretSith_v1.0/Cards/confidence-no.jpg",
                       width: 120),
               ],
             );

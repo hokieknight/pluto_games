@@ -17,7 +17,15 @@ class _SithVoteState extends ConsumerState<SithVote> {
   late GameUser gameUser;
   late SithGameData sithGameData;
 
-  void castVote(String vote) {
+  void castVote(String vote) async {
+    sithGameData = await SithGameData.getRemote(sithGameData.id);
+    sithGameData.castVote(gameUser.uid, vote);
+    ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
+    sithGameData.setRemote();
+    setState(() {});
+  }
+
+  void confirmVote(String vote) {
     SithPlayerData? playerPC = sithGameData.getPrimeChancellor();
 
     showDialog(
@@ -35,12 +43,7 @@ class _SithVoteState extends ConsumerState<SithVote> {
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
-              sithGameData.castVote(gameUser.uid, vote);
-              ref
-                  .read(sithGameDataProvider.notifier)
-                  .setSithGameData(sithGameData);
-              sithGameData.setRemote();
-              setState(() {});
+              castVote(vote);
             },
             child: const Text('OK'),
           )
@@ -50,10 +53,7 @@ class _SithVoteState extends ConsumerState<SithVote> {
   }
 
   void retractVote() {
-    sithGameData.castVote(gameUser.uid, "");
-    ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
-    sithGameData.setRemote();
-    setState(() {});
+    castVote("");
   }
 
   @override

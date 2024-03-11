@@ -4,34 +4,12 @@ import 'package:pluto_games/models/sith_player_data.dart';
 class SithPlayerName extends StatelessWidget {
   final SithPlayerData player;
   //final bool selectable;
-  final void Function(SithPlayerData)? nominatePC;
+  final void Function(BuildContext, SithPlayerData)? nominatePC;
   const SithPlayerName(this.player, this.nominatePC, {super.key});
 
   void onTap(BuildContext context) {
     if (nominatePC == null) return;
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Nominate Prime Chancellor'),
-        content: Text('Confirm nomination of ${player.name}'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              nominatePC!(player);
-            },
-            child: const Text('OK'),
-          )
-        ],
-      ),
-    );
+    nominatePC!(context, player);
   }
 
   @override
