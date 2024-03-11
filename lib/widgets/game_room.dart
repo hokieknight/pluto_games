@@ -80,14 +80,14 @@ class _GameRoomWidgetState extends ConsumerState<GameRoomWidget> {
         }
 
         return Container(
-          margin: const EdgeInsets.all(2),
+          //margin: const EdgeInsets.all(2),
           padding: const EdgeInsets.all(2),
           //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
           child: Column(
             children: [
               gameWidget,
               Container(
-                margin: const EdgeInsets.all(4),
+                //margin: const EdgeInsets.all(4),
                 padding: const EdgeInsets.all(4),
                 //decoration:
                 //    BoxDecoration(border: Border.all(color: Colors.red)),

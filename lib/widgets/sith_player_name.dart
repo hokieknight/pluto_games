@@ -15,11 +15,12 @@ class SithPlayerName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    double textScale = 0.75;
 
     return Container(
       //margin: const EdgeInsets.all(4),
       padding: const EdgeInsets.all(2),
-      width: 80,
+      width: 60,
       //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
       child: Column(
         children: [
@@ -30,21 +31,62 @@ class SithPlayerName extends StatelessWidget {
             child: CircleAvatar(
               backgroundImage: null,
               backgroundColor: theme.colorScheme.primary.withAlpha(180),
-              radius: 24,
-              child: Text(player.name),
+              radius: 20,
+              child:
+                  Text(player.name, textScaler: TextScaler.linear(textScale)),
             ),
           ),
           //Text(player.name),
-          if (player.isViceChair) const Text('Vice'),
-          if (player.isViceChair) const Text('Chair'),
-          if (player.isPrevViceChair) const Text('Previous'),
-          if (player.isPrevViceChair) const Text('Vice'),
-          if (player.isPrevViceChair) const Text('Chair'),
-          if (player.isPrimeChancellor) const Text('Prime'),
-          if (player.isPrimeChancellor) const Text('Chancellor'),
-          if (player.isPrevPrimeChancellor) const Text('Previous'),
-          if (player.isPrevPrimeChancellor) const Text('Prime'),
-          if (player.isPrevPrimeChancellor) const Text('Chancellor'),
+          if (player.isViceChair)
+            Text(
+              'Vice',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isViceChair)
+            Text(
+              'Chair',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrevViceChair)
+            Text(
+              'Previous',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrevViceChair)
+            Text(
+              'Vice',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrevViceChair)
+            Text(
+              'Chair',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrimeChancellor)
+            Text(
+              'Prime',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrimeChancellor)
+            Text(
+              'Chancellor',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrevPrimeChancellor)
+            Text(
+              'Previous',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrevPrimeChancellor)
+            Text(
+              'Prime',
+              textScaler: TextScaler.linear(textScale),
+            ),
+          if (player.isPrevPrimeChancellor)
+            Text(
+              'Chancellor',
+              textScaler: TextScaler.linear(textScale),
+            ),
         ],
       ),
     );

@@ -21,12 +21,12 @@ class MyFlipCard extends StatelessWidget {
         backWidget: Image.asset(
           frontImage,
           //width: 100,
-          height: 120,
+          height: 100,
         ),
         frontWidget: Image.asset(
           backImage,
           //width: 100,
-          height: 120,
+          height: 100,
         ),
       ),
     );
