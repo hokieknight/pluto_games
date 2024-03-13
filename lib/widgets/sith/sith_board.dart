@@ -53,6 +53,10 @@ class _SithBoardState extends ConsumerState<SithBoard> {
                 const Text("Vote Pass"),
               if (sithGameData.electionResult == "Fail")
                 const Text("Vote Fail"),
+              if (sithGameData.policyResult == "Loyalist")
+                const Text("Loyalist Policy Enacted"),
+              if (sithGameData.policyResult == "Separatist")
+                const Text("Separatist Policy Enacted"),
               Text(SithGameController.getGamePhaseTitle(sithGameData)),
               if (SithGameController.isVotePhase(sithGameData))
                 const SithVote(),

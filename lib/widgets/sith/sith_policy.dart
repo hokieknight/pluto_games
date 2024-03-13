@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/controllers/sith_game_controller.dart';
 import 'package:pluto_games/models/game_user.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
-import 'package:pluto_games/models/sith_player_data.dart';
 import 'package:pluto_games/providers/game_user_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/stack_cards.dart';
@@ -19,6 +18,26 @@ class _SithPolicyState extends ConsumerState<SithPolicy> {
   late GameUser gameUser;
   late SithGameData sithGameData;
 
+  void discardPolicy(int index) async {
+    sithGameData = await SithGameData.getRemote(sithGameData.id);
+    SithGameController.discardPolicy(sithGameData, index);
+    ref.read(sithGameDataProvider.notifier).setSithGameData(sithGameData);
+    sithGameData.setRemote();
+    //setState(() {});
+  }
+
+  void discardPolicy0() {
+    discardPolicy(0);
+  }
+
+  void discardPolicy1() {
+    discardPolicy(1);
+  }
+
+  void discardPolicy2() {
+    discardPolicy(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     double policyWidth = 60;
@@ -26,8 +45,10 @@ class _SithPolicyState extends ConsumerState<SithPolicy> {
     double textScale = 0.60;
     gameUser = ref.watch(gameUserProvider);
     sithGameData = ref.watch(sithGameDataProvider);
-    SithPlayerData? thisPlayer =
-        SithGameController.getPlayerByID(sithGameData, gameUser.uid);
+
+    List<dynamic> policyHand = sithGameData.policyHand;
+    //SithPlayerData? thisPlayer =
+    //    SithGameController.getPlayerByID(sithGameData, gameUser.uid);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -60,9 +81,9 @@ class _SithPolicyState extends ConsumerState<SithPolicy> {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: InkWell(
-            onTap: () {},
+            onTap: discardPolicy0,
             child: Image.asset(
-              "images/SecretSith_v1.0/Cards/policy-loy.png",
+              "images/SecretSith_v1.0/Cards/policy-${policyHand[0]}.png",
               width: policyWidth,
               height: policyHeight,
             ),
@@ -71,25 +92,26 @@ class _SithPolicyState extends ConsumerState<SithPolicy> {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: InkWell(
-            onTap: () {},
+            onTap: discardPolicy1,
             child: Image.asset(
-              "images/SecretSith_v1.0/Cards/policy-sep.png",
+              "images/SecretSith_v1.0/Cards/policy-${policyHand[1]}.png",
               width: policyWidth,
               height: policyHeight,
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: InkWell(
-            onTap: () {},
-            child: Image.asset(
-              "images/SecretSith_v1.0/Cards/policy-sep.png",
-              width: policyWidth,
-              height: policyHeight,
+        if (policyHand.length == 3)
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+              onTap: discardPolicy2,
+              child: Image.asset(
+                "images/SecretSith_v1.0/Cards/policy-${policyHand[2]}.png",
+                width: policyWidth,
+                height: policyHeight,
+              ),
             ),
           ),
-        ),
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Card.outlined(
