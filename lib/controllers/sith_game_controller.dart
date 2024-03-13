@@ -9,7 +9,13 @@ class SithGameController {
   static SithGameData newGame(String gameID, List<dynamic> gamePlayers) {
     SithGameData game = SithGameData();
     game.gameID = gameID;
+    game = setupPlayers(game, gamePlayers);
+    game = setupPolicies(game);
+    return game;
+  }
 
+  static SithGameData setupPlayers(
+      SithGameData game, List<dynamic> gamePlayers) {
     game.numPlayers = gamePlayers.length;
     int numSeps = 2;
     if (game.numPlayers > 6) {
@@ -45,6 +51,31 @@ class SithGameController {
     game.sithPlayers[Random().nextInt(game.sithPlayers.length)].isViceChair =
         true;
 
+    return game;
+  }
+
+  static SithGameData setupPolicies(SithGameData game) {
+    game.policyDiscard = [];
+    game.policyDraw = [
+      "loy",
+      "loy",
+      "loy",
+      "loy",
+      "loy",
+      "loy",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep",
+      "sep"
+    ];
+    game.policyDraw.shuffle();
     return game;
   }
 
@@ -86,6 +117,10 @@ class SithGameController {
 
   static bool isVotePhase(SithGameData game) {
     return game.phase == "vote-chancellor";
+  }
+
+  static bool isPolicyPhase(SithGameData game) {
+    return game.phase == "select-policy1" || game.phase == "select-policy1";
   }
 
   static void castVote(SithGameData game, String uid, String vote) {

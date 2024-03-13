@@ -98,7 +98,7 @@ class _SithVoteState extends ConsumerState<SithVote> {
               castVote("No");
             },
             child: Image.asset("images/SecretSith_v1.0/Cards/confidence-no.jpg",
-                width: 120),
+                width: 80),
           ),
         ),
       ],

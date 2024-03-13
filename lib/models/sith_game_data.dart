@@ -10,6 +10,9 @@ class SithGameData {
   int turn = 1;
   String phase = "pick-chancellor";
   String electionResult = "";
+  List<dynamic> policyDraw = [];
+  List<dynamic> policyHand = [];
+  List<dynamic> policyDiscard = [];
 
   SithGameData();
 
@@ -22,7 +25,10 @@ class SithGameData {
             json['sithPlayers'].map((model) => SithPlayerData.fromJson(model))),
         turn = json['turn'] as int,
         phase = json['phase'] as String,
-        electionResult = json['electionResult'] as String;
+        electionResult = json['electionResult'] as String,
+        policyDraw = json['policyDraw'],
+        policyHand = json['policyHand'],
+        policyDiscard = json['policyDiscard'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -33,6 +39,9 @@ class SithGameData {
         'turn': turn,
         'phase': phase,
         'electionResult': electionResult,
+        'policyDraw': policyDraw,
+        'policyHand': policyHand,
+        'policyDiscard': policyDiscard,
       };
 
   Future<void> addRemote() async {
@@ -44,6 +53,9 @@ class SithGameData {
       'turn': turn,
       'phase': phase,
       'electionResult': electionResult,
+      'policyDraw': policyDraw,
+      'policyHand': policyHand,
+      'policyDiscard': policyDiscard,
     }).then((value) => id = value.id);
   }
 
@@ -70,6 +82,9 @@ class SithGameData {
       'turn': turn,
       'phase': phase,
       'electionResult': electionResult,
+      'policyDraw': policyDraw,
+      'policyHand': policyHand,
+      'policyDiscard': policyDiscard,
     });
   }
 }
