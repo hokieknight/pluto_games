@@ -22,7 +22,7 @@ class GameInfoWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             //decoration: BoxDecoration(border: Border.all(color: Colors.red)),
             child: Image.asset(
-              'images/CoverSecretSith.jpg',
+              'images/SecretSith_v1.0/CoverSecretSith.jpg',
               height: 250,
               //width: 100,
               fit: BoxFit.fitHeight,
