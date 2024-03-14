@@ -126,6 +126,14 @@ class SithGameController {
     return game.phase == "select-policy1" || game.phase == "select-policy2";
   }
 
+  static bool isPolicyPhase1(SithGameData game) {
+    return game.phase == "select-policy1";
+  }
+
+  static bool isPolicyPhase2(SithGameData game) {
+    return game.phase == "select-policy2";
+  }
+
   static void castVote(SithGameData game, String uid, String vote) {
     int yesCount = 0;
     int noCount = 0;
@@ -142,6 +150,7 @@ class SithGameController {
 
     // voting is done
     if ((yesCount + noCount) == game.sithPlayers.length) {
+      game.policyResult = "";
       if (yesCount > noCount) {
         game.electionResult = "Pass";
       } else {
