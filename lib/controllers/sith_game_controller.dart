@@ -163,8 +163,8 @@ class SithGameController {
         game.electionResult = "Fail";
         game.failedElections++;
       }
+      nextPhase(game);
     }
-    nextPhase(game);
   }
 
   static void nominatePrimeChancellor(
