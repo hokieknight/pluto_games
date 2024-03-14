@@ -3,9 +3,11 @@ import 'package:pluto_games/models/sith_player_data.dart';
 
 class SithPlayerName extends StatelessWidget {
   final SithPlayerData player;
-  //final bool selectable;
+  final bool isMe;
   final void Function(BuildContext, SithPlayerData)? nominatePC;
-  const SithPlayerName(this.player, this.nominatePC, {super.key});
+  //final bool selectable;
+
+  const SithPlayerName(this.player, this.isMe, this.nominatePC, {super.key});
 
   void onTap(BuildContext context) {
     if (nominatePC == null) return;
@@ -29,11 +31,17 @@ class SithPlayerName extends StatelessWidget {
               onTap(context);
             },
             child: CircleAvatar(
-              backgroundImage: null,
-              backgroundColor: theme.colorScheme.primary.withAlpha(180),
-              radius: 20,
-              child:
-                  Text(player.name, textScaler: TextScaler.linear(textScale)),
+              backgroundColor: isMe
+                  ? theme.colorScheme.primary.withAlpha(180)
+                  : theme.colorScheme.primaryContainer,
+              radius: 24,
+              child: CircleAvatar(
+                backgroundImage: null,
+                //backgroundColor: theme.colorScheme.primary.withAlpha(180),
+                radius: 20,
+                child:
+                    Text(player.name, textScaler: TextScaler.linear(textScale)),
+              ),
             ),
           ),
           //Text(player.name),
