@@ -36,7 +36,8 @@ class SithGameController {
           SithPlayerData(id: player['id'], name: player['name']);
       int index = temp.indexOf(newPlayer.id);
       if (index == 0) {
-        newPlayer.role = "role-sep1-palp";
+        newPlayer.role =
+            Random().nextBool() ? "role-sep1-palp" : "role-sep5-darthjar";
         newPlayer.membership = "membership-sep";
       } else if (index < numSeps) {
         newPlayer.role = "role-sep${index + 1}";
