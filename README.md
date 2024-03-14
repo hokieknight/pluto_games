@@ -2,7 +2,7 @@
 <img src="./images/icon-512-maskable.png" alt="logo" width="200"/>
 https://pluto-games-822c0.web.app
 
-# Install
+# Developer Install
 ```
 git clone https://github.com/hokieknight/pluto_games.git
 ```
