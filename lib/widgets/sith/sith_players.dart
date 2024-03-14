@@ -106,17 +106,28 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                 ),
                 if (SithGameController.isVotePhase(sithGameData) &&
                     player.vote.isNotEmpty)
-                  Image.asset(
-                      "images/SecretSith_v1.0/Cards/confidence-back.jpg",
-                      width: 80),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.asset(
+                        "images/SecretSith_v1.0/Cards/confidence-back.jpg",
+                        width: 80),
+                  ),
                 if (!SithGameController.isVotePhase(sithGameData) &&
                     player.vote == "Yes")
-                  Image.asset("images/SecretSith_v1.0/Cards/confidence-yes.jpg",
-                      width: 80),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.asset(
+                        "images/SecretSith_v1.0/Cards/confidence-yes.jpg",
+                        width: 80),
+                  ),
                 if (!SithGameController.isVotePhase(sithGameData) &&
                     player.vote == "No")
-                  Image.asset("images/SecretSith_v1.0/Cards/confidence-no.jpg",
-                      width: 80),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.asset(
+                        "images/SecretSith_v1.0/Cards/confidence-no.jpg",
+                        width: 80),
+                  ),
               ],
             );
           },
