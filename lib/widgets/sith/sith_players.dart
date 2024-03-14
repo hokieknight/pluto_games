@@ -77,6 +77,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
 
         Map<String, dynamic>? data = snapshot.data!.data();
         sithGameData = SithGameData.fromJson(sithGameData.id, data!);
+        SithPlayerData thisPlayer =
+            SithGameController.getPlayerByID(sithGameData, gameUser.uid)!;
 
         return ListView.builder(
           //padding: const EdgeInsets.all(2),
@@ -86,10 +88,24 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
             return Row(
               children: [
                 SithPlayerName(player, nominatePC),
-                MyFlipCard('images/SecretSith_v1.0/Cards/membership-back.jpg',
-                    'images/SecretSith_v1.0/Cards/${player.membership}.jpg'),
-                MyFlipCard('images/SecretSith_v1.0/Cards/role-back.jpg',
-                    'images/SecretSith_v1.0/Cards/${player.role}.jpg'),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: MyFlipCard(
+                    'images/SecretSith_v1.0/Cards/membership-back.jpg',
+                    'images/SecretSith_v1.0/Cards/${player.membership}.jpg',
+                    thisPlayer.id == player.id,
+                    100,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: MyFlipCard(
+                    'images/SecretSith_v1.0/Cards/role-back.jpg',
+                    'images/SecretSith_v1.0/Cards/${player.role}.jpg',
+                    thisPlayer.id == player.id,
+                    100,
+                  ),
+                ),
                 if (SithGameController.isVotePhase(sithGameData) &&
                     player.vote.isNotEmpty)
                   Image.asset(

@@ -65,8 +65,11 @@ class _SithBoardState extends ConsumerState<SithBoard> {
               Container(
                 margin: const EdgeInsets.all(2),
                 //padding: const EdgeInsets.all(2),
-                height: 280,
-                //SithGameController.isVotePhase(sithGameData) ? 280 : 360,
+                //height: 280,
+                height: SithGameController.isVotePhase(sithGameData) ||
+                        SithGameController.isPolicyPhase(sithGameData)
+                    ? 280
+                    : 360,
                 //decoration:
                 //    BoxDecoration(border: Border.all(color: Colors.red)),
                 child: const SithPlayers(),
