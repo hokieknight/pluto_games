@@ -199,6 +199,23 @@ class SithGameController {
     nextPhase(game);
   }
 
+  static void drawPolicies(SithGameData game) {
+    if (game.policyDraw.length < 3) {
+      for (String policy in game.policyDiscard) {
+        game.policyDraw.add(policy);
+      }
+      game.policyDraw.shuffle();
+      game.policyDiscard.clear();
+    }
+
+    String policy1 = game.policyDraw.removeAt(0);
+    game.policyHand.add(policy1);
+    String policy2 = game.policyDraw.removeAt(0);
+    game.policyHand.add(policy2);
+    String policy3 = game.policyDraw.removeAt(0);
+    game.policyHand.add(policy3);
+  }
+
   static void nextPhase(SithGameData game) {
     if (game.phase == "pick-chancellor") {
       game.phase = "vote-chancellor";
@@ -207,12 +224,7 @@ class SithGameController {
     if (game.phase == "vote-chancellor") {
       if (game.electionResult == "Pass") {
         game.phase = "select-policy1";
-        String policy1 = game.policyDraw.removeAt(0);
-        game.policyHand.add(policy1);
-        String policy2 = game.policyDraw.removeAt(0);
-        game.policyHand.add(policy2);
-        String policy3 = game.policyDraw.removeAt(0);
-        game.policyHand.add(policy3);
+        drawPolicies(game);
       } else {
         game.phase = "pick-chancellor";
       }
