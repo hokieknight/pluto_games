@@ -48,7 +48,10 @@ class MessageBubble extends StatelessWidget {
     if (!(userImage?.isEmpty ?? true)) {
       imageUrl = NetworkImage(userImage!);
     } else if (!(username?.isEmpty ?? true)) {
-      imageText = Text(username!);
+      imageText = Text(
+        username!,
+        textScaler: const TextScaler.linear(0.5),
+      );
     }
 
     return Stack(
@@ -60,15 +63,15 @@ class MessageBubble extends StatelessWidget {
             right: isMe ? 0 : null,
             child: CircleAvatar(
               backgroundImage: imageUrl,
-              backgroundColor: theme.colorScheme.primary.withAlpha(180),
-              radius: 23,
+              //backgroundColor: theme.colorScheme.primary.withAlpha(180),
+              radius: 16,
               child: imageText,
             ),
           ),
         Container(
           // Add some margin to the edges of the messages, to allow space for the
           // user's image.
-          margin: const EdgeInsets.symmetric(horizontal: 46),
+          margin: const EdgeInsets.symmetric(horizontal: 40),
           child: Row(
             // The side of the chat screen the message should show at.
             mainAxisAlignment:
@@ -80,21 +83,21 @@ class MessageBubble extends StatelessWidget {
                 children: [
                   // First messages in the sequence provide a visual buffer at
                   // the top.
-                  if (isFirstInSequence) const SizedBox(height: 18),
-                  if (username != null)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 13,
-                        right: 13,
-                      ),
-                      child: Text(
-                        username!,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
+                  if (isFirstInSequence) const SizedBox(height: 12),
+                  // if (username != null)
+                  //   Padding(
+                  //     padding: const EdgeInsets.only(
+                  //       left: 4,
+                  //       right: 4,
+                  //     ),
+                  //     child: Text(
+                  //       username!,
+                  //       style: const TextStyle(
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Colors.black87,
+                  //       ),
+                  //     ),
+                  //   ),
 
                   // The "speech" box surrounding the message.
                   Container(
@@ -109,12 +112,12 @@ class MessageBubble extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                         topLeft: !isMe && isFirstInSequence
                             ? Radius.zero
-                            : const Radius.circular(12),
+                            : const Radius.circular(8),
                         topRight: isMe && isFirstInSequence
                             ? Radius.zero
-                            : const Radius.circular(12),
-                        bottomLeft: const Radius.circular(12),
-                        bottomRight: const Radius.circular(12),
+                            : const Radius.circular(8),
+                        bottomLeft: const Radius.circular(8),
+                        bottomRight: const Radius.circular(8),
                       ),
                     ),
                     // Set some reasonable constraints on the width of the
@@ -122,24 +125,25 @@ class MessageBubble extends StatelessWidget {
                     // it should show.
                     constraints: const BoxConstraints(maxWidth: 200),
                     padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 14,
+                      vertical: 4,
+                      horizontal: 4,
                     ),
                     // Margin around the bubble.
                     margin: const EdgeInsets.symmetric(
                       vertical: 4,
-                      horizontal: 12,
+                      horizontal: 4,
                     ),
                     child: Text(
                       message,
                       style: TextStyle(
                         // Add a little line spacing to make the text look nicer
                         // when multilined.
-                        height: 1.3,
+                        //height: 1.3,
                         color: isMe
                             ? Colors.black87
                             : theme.colorScheme.onSecondary,
                       ),
+                      //textScaler: const TextScaler.linear(0.9),
                       softWrap: true,
                     ),
                   ),
