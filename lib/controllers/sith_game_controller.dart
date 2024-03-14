@@ -154,12 +154,14 @@ class SithGameController {
       game.policyResult = "";
       if (yesCount > noCount) {
         game.electionResult = "Pass";
+        game.failedElections = 0;
       } else {
         game.sithPlayers[indexVC].isViceChair = false;
         game.sithPlayers[indexPC].isPrimeChancellor = false;
         indexVC = (indexVC + 1) % game.sithPlayers.length;
         game.sithPlayers[indexVC].isViceChair = true;
         game.electionResult = "Fail";
+        game.failedElections++;
       }
     }
     nextPhase(game);
