@@ -30,7 +30,7 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
   }
 
   void nominatePC(BuildContext context, SithPlayerData player) async {
-    bool selectPC = SithGameController.isSelectPC(sithGameData, gameUser.uid);
+    bool selectPC = SithGameController.canSelectPC(sithGameData, gameUser.uid);
     //(selectPC && !player.isViceChair) ? _nominatePC : null
     if (!selectPC) return;
     if (player.isViceChair) return;

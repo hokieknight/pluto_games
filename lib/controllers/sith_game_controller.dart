@@ -80,7 +80,7 @@ class SithGameController {
     return game;
   }
 
-  static bool isSelectPC(SithGameData game, String uid) {
+  static bool canSelectPC(SithGameData game, String uid) {
     if (game.phase != "pick-chancellor") return false;
     int index = game.sithPlayers.indexWhere((element) => element.id == uid);
     if (index < 0) return false;
@@ -100,23 +100,8 @@ class SithGameController {
     return game.sithPlayers[index];
   }
 
-  static String getGamePhaseTitle(SithGameData game) {
-    if (game.phase == "pick-chancellor") {
-      return "Vice Chair Nominate Prime Chancellor";
-    }
-    if (game.phase == "vote-chancellor") {
-      SithPlayerData? pcPlayer = getPrimeChancellor(game);
-      if (null != pcPlayer) {
-        return "Vote for ${pcPlayer.name} as Prime Chancellor";
-      }
-      return "No Prime Chancellor to Vote For";
-    }
-    if (game.phase == "select-policy1") return "Vice Chair Discard a Policy";
-    if (game.phase == "select-policy2") {
-      return "Prime Chancellor Discard a Policy";
-    }
-
-    return "";
+  static bool isPickPhase(SithGameData game) {
+    return game.phase == "pick-chancellor";
   }
 
   static bool isVotePhase(SithGameData game) {
@@ -133,6 +118,22 @@ class SithGameController {
 
   static bool isPolicyPhase2(SithGameData game) {
     return game.phase == "select-policy2";
+  }
+
+  static bool isElectionPass(SithGameData game) {
+    return game.electionResult == "Pass";
+  }
+
+  static bool isElectionFail(SithGameData game) {
+    return game.electionResult == "Fail";
+  }
+
+  static bool isLoyalistPolicyEnacted(SithGameData game) {
+    return game.policyResult == "Loyalist";
+  }
+
+  static bool isSeparatistPolicyEnacted(SithGameData game) {
+    return game.policyResult == "Separatist";
   }
 
   static void castVote(SithGameData game, String uid, String vote) {

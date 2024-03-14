@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pluto_games/controllers/sith_game_controller.dart';
 import 'package:pluto_games/models/game_state.dart';
 import 'package:pluto_games/models/sith_game_data.dart';
+import 'package:pluto_games/models/sith_player_data.dart';
 import 'package:pluto_games/models/snapshot_handler.dart';
 import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
@@ -21,6 +22,39 @@ class SithBoard extends ConsumerStatefulWidget {
 class _SithBoardState extends ConsumerState<SithBoard> {
   late GameState gameState;
   late SithGameData sithGameData;
+
+  String getGamePhaseTitle() {
+    if (SithGameController.isPickPhase(sithGameData)) {
+      return "Vice Chair Nominate Prime Chancellor";
+    }
+    if (SithGameController.isVotePhase(sithGameData)) {
+      SithPlayerData? pcPlayer =
+          SithGameController.getPrimeChancellor(sithGameData);
+      if (null != pcPlayer) {
+        return "Vote for ${pcPlayer.name} as Prime Chancellor";
+      }
+      return "No Prime Chancellor to Vote For";
+    }
+    if (SithGameController.isPolicyPhase1(sithGameData)) {
+      return "Vice Chair Discard a Policy";
+    }
+    if (SithGameController.isPolicyPhase2(sithGameData)) {
+      return "Prime Chancellor Discard a Policy";
+    }
+    return "";
+  }
+
+  String getGameResult() {
+    if (SithGameController.isElectionPass(sithGameData)) return "Vote Pass";
+    if (SithGameController.isElectionFail(sithGameData)) return "Vote Fail";
+    if (SithGameController.isLoyalistPolicyEnacted(sithGameData)) {
+      return "Loyalist Policy Enacted";
+    }
+    if (SithGameController.isSeparatistPolicyEnacted(sithGameData)) {
+      return "Separatist Policy Enacted";
+    }
+    return "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,23 +75,16 @@ class _SithBoardState extends ConsumerState<SithBoard> {
             .doc(gameState.gameDataID)
             .snapshots(),
         builder: (ctx, snapshot) {
-          Widget? widget = handleSnapshot(snapshot, "Sith Game");
-          if (widget != null) return widget;
+          Widget? errorWidget = handleSnapshot(snapshot, "Sith Game");
+          if (errorWidget != null) return errorWidget;
 
           Map<String, dynamic>? data = snapshot.data!.data();
           sithGameData = SithGameData.fromJson(gameState.gameDataID, data!);
 
           return Column(
             children: [
-              if (sithGameData.electionResult == "Pass")
-                const Text("Vote Pass"),
-              if (sithGameData.electionResult == "Fail")
-                const Text("Vote Fail"),
-              if (sithGameData.policyResult == "Loyalist")
-                const Text("Loyalist Policy Enacted"),
-              if (sithGameData.policyResult == "Separatist")
-                const Text("Separatist Policy Enacted"),
-              Text(SithGameController.getGamePhaseTitle(sithGameData)),
+              Text(getGameResult()),
+              Text(getGamePhaseTitle()),
               if (SithGameController.isVotePhase(sithGameData))
                 const SithVote(),
               if (SithGameController.isPolicyPhase(sithGameData))
