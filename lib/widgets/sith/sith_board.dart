@@ -95,7 +95,7 @@ class _SithBoardState extends ConsumerState<SithBoard> {
                 //height: 280,
                 height: SithGameController.isVotePhase(sithGameData) ||
                         SithGameController.isPolicyPhase(sithGameData)
-                    ? 280
+                    ? 320
                     : 360,
                 //decoration:
                 //    BoxDecoration(border: Border.all(color: Colors.red)),

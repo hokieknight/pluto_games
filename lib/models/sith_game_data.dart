@@ -17,6 +17,7 @@ class SithGameData {
   int policiesEnactedSep = 0;
   String policyResult = "";
   int failedElections = 0;
+  int assassinationCount = 0;
 
   SithGameData();
 
@@ -36,7 +37,8 @@ class SithGameData {
         policiesEnactedLoy = json['policiesEnactedLoy'],
         policiesEnactedSep = json['policiesEnactedSep'],
         policyResult = json['policyResult'],
-        failedElections = json['failedElections'];
+        failedElections = json['failedElections'],
+        assassinationCount = json['assassinationCount'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -54,6 +56,7 @@ class SithGameData {
         'policiesEnactedSep': policiesEnactedSep,
         'policyResult': policyResult,
         'failedElections': failedElections,
+        'assassinationCount': assassinationCount,
       };
 
   Future<void> addRemote() async {
@@ -72,6 +75,7 @@ class SithGameData {
       'policiesEnactedSep': policiesEnactedSep,
       'policyResult': policyResult,
       'failedElections': failedElections,
+      'assassinationCount': assassinationCount,
     }).then((value) => id = value.id);
   }
 
@@ -105,6 +109,7 @@ class SithGameData {
       'policiesEnactedSep': policiesEnactedSep,
       'policyResult': policyResult,
       'failedElections': failedElections,
+      'assassinationCount': assassinationCount,
     });
   }
 }

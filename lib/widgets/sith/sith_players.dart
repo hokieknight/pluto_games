@@ -35,7 +35,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
     if (!selectPC) return;
     if (player.isViceChair) return;
     if (player.isPrevPrimeChancellor) return;
-    if (player.isPrevViceChair) return;
+    if (player.isPrevViceChair &&
+        (sithGameData.numPlayers - sithGameData.assassinationCount > 5)) return;
 
     showDialog(
       context: context,
