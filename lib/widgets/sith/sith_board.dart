@@ -10,6 +10,7 @@ import 'package:pluto_games/providers/game_state_provider.dart';
 import 'package:pluto_games/providers/sith_game_data_provider.dart';
 import 'package:pluto_games/widgets/sith/sith_players.dart';
 import 'package:pluto_games/widgets/sith/sith_policy.dart';
+import 'package:pluto_games/widgets/sith/sith_reveal.dart';
 import 'package:pluto_games/widgets/sith/sith_vote.dart';
 
 class SithBoard extends ConsumerStatefulWidget {
@@ -88,6 +89,8 @@ class _SithBoardState extends ConsumerState<SithBoard> {
             children: [
               Text(getGameResult()),
               Text(getGamePhaseTitle()),
+              if (SithGameController.isSepRevealPhase(sithGameData))
+                const SithReveal(),
               if (SithGameController.isVotePhase(sithGameData))
                 const SithVote(),
               if (SithGameController.isPolicyPhase(sithGameData))

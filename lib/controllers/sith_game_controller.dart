@@ -147,6 +147,19 @@ class SithGameController {
     return game.policyResult == "Separatist";
   }
 
+  static void setRevealReady(SithGameData game, String uid) {
+    int readyCount = 0;
+    int sepCount = 0;
+    for (int index = 0; index < game.sithPlayers.length; index++) {
+      var player = game.sithPlayers[index];
+      if (player.id == uid) player.revealReady = true;
+
+      if (player.revealReady) readyCount++;
+      if (isSeparatistReveal(game, player.role)) sepCount++;
+    }
+    if (readyCount == sepCount) game.phase = "pick-chancellor";
+  }
+
   static void castVote(SithGameData game, String uid, String vote) {
     int yesCount = 0;
     int noCount = 0;

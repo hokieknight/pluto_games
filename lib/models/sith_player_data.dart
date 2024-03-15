@@ -9,6 +9,7 @@ class SithPlayerData {
   bool isPrevPrimeChancellor = false;
   String vote = "";
   bool assassinated = false;
+  bool revealReady = false;
 
   SithPlayerData({
     required this.id,
@@ -25,7 +26,8 @@ class SithPlayerData {
         isPrevViceChair = json['isPrevViceChair'] as bool,
         isPrevPrimeChancellor = json['isPrevPrimeChancellor'] as bool,
         vote = json['vote'] as String,
-        assassinated = json['assassinated'] as bool;
+        assassinated = json['assassinated'] as bool,
+        revealReady = json['revealReady'] as bool;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -38,5 +40,6 @@ class SithPlayerData {
         'isPrevPrimeChancellor': isPrevPrimeChancellor,
         'vote': vote,
         'assassinated': assassinated,
+        'revealReady': revealReady,
       };
 }

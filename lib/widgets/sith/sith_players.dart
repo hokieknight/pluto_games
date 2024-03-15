@@ -80,6 +80,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
         sithGameData = SithGameData.fromJson(sithGameData.id, data!);
         SithPlayerData me =
             SithGameController.getPlayerByID(sithGameData, gameUser.uid)!;
+        bool canReveal =
+            SithGameController.isSeparatistReveal(sithGameData, me.role);
 
         return ListView.builder(
           //padding: const EdgeInsets.all(2),
@@ -94,9 +96,9 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                   child: MyFlipCard(
                     'images/SecretSith_v1.0/Cards/membership-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.membership}.jpg',
-                    gameUser.uid == player.id,
-                    SithGameController.isSeparatistReveal(
-                        sithGameData, me.role),
+                    gameUser.uid == player.id || canReveal,
+                    SithGameController.isSepRevealPhase(sithGameData) &&
+                        canReveal,
                     100,
                   ),
                 ),
@@ -105,9 +107,9 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                   child: MyFlipCard(
                     'images/SecretSith_v1.0/Cards/role-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.role}.jpg',
-                    gameUser.uid == player.id,
-                    SithGameController.isSeparatistReveal(
-                        sithGameData, me.role),
+                    gameUser.uid == player.id || canReveal,
+                    SithGameController.isSepRevealPhase(sithGameData) &&
+                        canReveal,
                     100,
                   ),
                 ),
