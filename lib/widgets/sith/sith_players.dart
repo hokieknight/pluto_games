@@ -80,7 +80,7 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
         sithGameData = SithGameData.fromJson(sithGameData.id, data!);
         SithPlayerData me =
             SithGameController.getPlayerByID(sithGameData, gameUser.uid)!;
-        bool canReveal =
+        bool canReveal = SithGameController.isSepRevealPhase(sithGameData) &&
             SithGameController.isSeparatistReveal(sithGameData, me.role);
 
         return ListView.builder(
@@ -88,6 +88,9 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
           itemCount: sithGameData.sithPlayers.length,
           itemBuilder: (BuildContext context, int index) {
             SithPlayerData player = sithGameData.sithPlayers[index];
+            bool canFlip = gameUser.uid == player.id ||
+                SithGameController.isSeparatistReveal(sithGameData, me.role);
+
             return Row(
               children: [
                 SithPlayerName(player, gameUser.uid == player.id, nominatePC),
@@ -96,9 +99,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                   child: MyFlipCard(
                     'images/SecretSith_v1.0/Cards/membership-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.membership}.jpg',
-                    gameUser.uid == player.id || canReveal,
-                    SithGameController.isSepRevealPhase(sithGameData) &&
-                        canReveal,
+                    canFlip,
+                    canReveal,
                     100,
                   ),
                 ),
@@ -107,9 +109,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                   child: MyFlipCard(
                     'images/SecretSith_v1.0/Cards/role-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.role}.jpg',
-                    gameUser.uid == player.id || canReveal,
-                    SithGameController.isSepRevealPhase(sithGameData) &&
-                        canReveal,
+                    canFlip,
+                    canReveal,
                     100,
                   ),
                 ),
