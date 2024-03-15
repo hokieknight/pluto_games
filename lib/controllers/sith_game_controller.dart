@@ -100,9 +100,14 @@ class SithGameController {
     return game.sithPlayers[index];
   }
 
+  static bool isSecretSith(String role) {
+    if (role == "role-sep1-palp") return true;
+    if (role == "role-sep5-darthjar") return true;
+    return false;
+  }
+
   static bool isSeparatistReveal(SithGameData game, String role) {
-    if (game.numPlayers > 6 && role == "role-sep1-palp") return false;
-    if (game.numPlayers > 6 && role == "role-sep5-darthjar") return false;
+    if (game.numPlayers > 6 && isSecretSith(role)) return false;
     if (role.startsWith("role-sep")) return true;
     return false;
   }
@@ -129,6 +134,18 @@ class SithGameController {
 
   static bool isPolicyPhase2(SithGameData game) {
     return game.phase == "select-policy2";
+  }
+
+  static bool isLoyWinPhase(SithGameData game) {
+    return game.phase == "loy-win";
+  }
+
+  static bool isSepWinPhase(SithGameData game) {
+    return game.phase == "sep-win";
+  }
+
+  static bool isWinPhase(SithGameData game) {
+    return isLoyWinPhase(game) || isSepWinPhase(game);
   }
 
   static bool isElectionPass(SithGameData game) {
@@ -253,6 +270,14 @@ class SithGameController {
     }
     if (game.phase == "vote-chancellor") {
       if (game.electionResult == "Pass") {
+        if (game.policiesEnactedSep >= 4) {
+          SithPlayerData pc = getPrimeChancellor(game)!;
+          if (isSecretSith(pc.role)) {
+            game.phase = "sep-win";
+            return;
+          }
+        }
+
         game.phase = "select-policy1";
         drawPolicies(game);
       } else {
@@ -265,12 +290,19 @@ class SithGameController {
       return;
     }
     if (game.phase == "select-policy2") {
+      game.electionResult = "";
+
+      if (game.policiesEnactedLoy >= 5) {
+        game.phase = "loy-win";
+        return;
+      }
+      if (game.policiesEnactedSep >= 6) {
+        game.phase = "sep-win";
+        return;
+      }
+
       game.phase = "pick-chancellor";
       game.turn++;
-      game.electionResult = "";
-      //set new VC, prev VC, prev PC
-      //clear PC
-      //clear votes
 
       int indexVC = 0;
       int indexPC = 0;

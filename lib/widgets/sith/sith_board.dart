@@ -12,6 +12,7 @@ import 'package:pluto_games/widgets/sith/sith_players.dart';
 import 'package:pluto_games/widgets/sith/sith_policy.dart';
 import 'package:pluto_games/widgets/sith/sith_reveal.dart';
 import 'package:pluto_games/widgets/sith/sith_vote.dart';
+import 'package:pluto_games/widgets/sith/sith_win.dart';
 
 class SithBoard extends ConsumerStatefulWidget {
   const SithBoard({super.key});
@@ -60,6 +61,21 @@ class _SithBoardState extends ConsumerState<SithBoard> {
     return "";
   }
 
+  Widget getPhaseWidget() {
+    if (SithGameController.isSepRevealPhase(sithGameData)) {
+      return const SithReveal();
+    }
+    if (SithGameController.isVotePhase(sithGameData)) return const SithVote();
+    if (SithGameController.isPolicyPhase(sithGameData)) {
+      return const SithPolicy();
+    }
+    if (SithGameController.isWinPhase(sithGameData)) {
+      return const SithWin();
+    }
+
+    return const SizedBox();
+  }
+
   @override
   Widget build(BuildContext context) {
     gameState = ref.watch(gameStateProvider);
@@ -89,12 +105,7 @@ class _SithBoardState extends ConsumerState<SithBoard> {
             children: [
               Text(getGameResult()),
               Text(getGamePhaseTitle()),
-              if (SithGameController.isSepRevealPhase(sithGameData))
-                const SithReveal(),
-              if (SithGameController.isVotePhase(sithGameData))
-                const SithVote(),
-              if (SithGameController.isPolicyPhase(sithGameData))
-                const SithPolicy(),
+              getPhaseWidget(),
               Container(
                 margin: const EdgeInsets.all(2),
                 //padding: const EdgeInsets.all(2),
