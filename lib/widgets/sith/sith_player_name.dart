@@ -55,17 +55,17 @@ class SithPlayerName extends StatelessWidget {
               'Chair',
               textScaler: TextScaler.linear(textScale),
             ),
-          if (player.isPrevViceChair)
+          if (player.isPrevViceChair && !player.isPrimeChancellor)
             Text(
               'Previous',
               textScaler: TextScaler.linear(textScale),
             ),
-          if (player.isPrevViceChair)
+          if (player.isPrevViceChair && !player.isPrimeChancellor)
             Text(
               'Vice',
               textScaler: TextScaler.linear(textScale),
             ),
-          if (player.isPrevViceChair)
+          if (player.isPrevViceChair && !player.isPrimeChancellor)
             Text(
               'Chair',
               textScaler: TextScaler.linear(textScale),
