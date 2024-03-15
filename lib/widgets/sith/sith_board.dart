@@ -101,6 +101,8 @@ class _SithBoardState extends ConsumerState<SithBoard> {
                 //    BoxDecoration(border: Border.all(color: Colors.red)),
                 child: const SithPlayers(),
               ),
+              Text(
+                  "Policies Enacted -- Loyalist: ${sithGameData.policiesEnactedLoy} Separatist: ${sithGameData.policiesEnactedSep} -- Elections Failed: ${sithGameData.failedElections}"),
             ],
           );
         });
