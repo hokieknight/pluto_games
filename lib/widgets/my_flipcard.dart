@@ -6,12 +6,21 @@ class MyFlipCard extends StatelessWidget {
   final String frontImage;
   final bool flippable;
   final double height;
+  final bool reveal;
 
-  const MyFlipCard(this.backImage, this.frontImage, this.flippable, this.height,
+  const MyFlipCard(
+      this.backImage, this.frontImage, this.flippable, this.reveal, this.height,
       {super.key});
 
   @override
   Widget build(BuildContext context) {
+    if (reveal) {
+      return Image.asset(
+        frontImage,
+        height: height,
+      );
+    }
+
     if (!flippable) {
       return Image.asset(
         backImage,

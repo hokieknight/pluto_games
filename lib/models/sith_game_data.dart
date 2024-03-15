@@ -8,7 +8,7 @@ class SithGameData {
   Timestamp createdAt = Timestamp.now();
   List<SithPlayerData> sithPlayers = [];
   int turn = 1;
-  String phase = "pick-chancellor";
+  String phase = "sep-reveal";
   String electionResult = "";
   List<dynamic> policyDraw = [];
   List<dynamic> policyHand = [];

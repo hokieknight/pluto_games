@@ -100,6 +100,17 @@ class SithGameController {
     return game.sithPlayers[index];
   }
 
+  static bool isSeparatistReveal(SithGameData game, String role) {
+    if (game.numPlayers > 6 && role == "role-sep1-palp") return false;
+    if (game.numPlayers > 6 && role == "role-sep5-darthjar") return false;
+    if (role.startsWith("role-sep")) return true;
+    return false;
+  }
+
+  static bool isSepRevealPhase(SithGameData game) {
+    return game.phase == "sep-reveal";
+  }
+
   static bool isPickPhase(SithGameData game) {
     return game.phase == "pick-chancellor";
   }

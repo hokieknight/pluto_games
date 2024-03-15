@@ -24,6 +24,9 @@ class _SithBoardState extends ConsumerState<SithBoard> {
   late SithGameData sithGameData;
 
   String getGamePhaseTitle() {
+    if (SithGameController.isSepRevealPhase(sithGameData)) {
+      return "Separatists Identify Each Other";
+    }
     if (SithGameController.isPickPhase(sithGameData)) {
       return "Vice Chair Nominate Prime Chancellor";
     }

@@ -78,6 +78,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
 
         Map<String, dynamic>? data = snapshot.data!.data();
         sithGameData = SithGameData.fromJson(sithGameData.id, data!);
+        SithPlayerData me =
+            SithGameController.getPlayerByID(sithGameData, gameUser.uid)!;
 
         return ListView.builder(
           //padding: const EdgeInsets.all(2),
@@ -93,6 +95,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                     'images/SecretSith_v1.0/Cards/membership-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.membership}.jpg',
                     gameUser.uid == player.id,
+                    SithGameController.isSeparatistReveal(
+                        sithGameData, me.role),
                     100,
                   ),
                 ),
@@ -102,6 +106,8 @@ class _SithPlayersState extends ConsumerState<SithPlayers> {
                     'images/SecretSith_v1.0/Cards/role-back.jpg',
                     'images/SecretSith_v1.0/Cards/${player.role}.jpg',
                     gameUser.uid == player.id,
+                    SithGameController.isSeparatistReveal(
+                        sithGameData, me.role),
                     100,
                   ),
                 ),
