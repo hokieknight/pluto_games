@@ -102,7 +102,8 @@ class _SithBoardState extends ConsumerState<SithBoard> {
                 child: const SithPlayers(),
               ),
               Text(
-                  "Policies Enacted -- Loyalist: ${sithGameData.policiesEnactedLoy} Separatist: ${sithGameData.policiesEnactedSep} -- Elections Failed: ${sithGameData.failedElections}"),
+                  "Policies Enacted -- Loyalist: ${sithGameData.policiesEnactedLoy} Separatist: ${sithGameData.policiesEnactedSep}"),
+              Text("Elections Failed: ${sithGameData.failedElections}"),
             ],
           );
         });

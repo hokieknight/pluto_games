@@ -26,16 +26,17 @@ class _GameRoomScreenState extends ConsumerState<GameRoomScreen> {
         title: Text('Pluto Games - ${_gameState.gameType}'),
         leading: Image.asset('images/my-pluto-2.png'),
       ),
-      body: const Column(
+      body: Column(
         children: [
-          Expanded(
+          const Expanded(
             flex: 4,
             child: GameRoomWidget(),
           ),
-          Expanded(
-            child: ChatMessages(),
-          ),
-          NewMessage(),
+          if (!_gameState.gameStarted)
+            const Expanded(
+              child: ChatMessages(),
+            ),
+          if (!_gameState.gameStarted) const NewMessage(),
         ],
       ),
     );
